@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judo - ASD SommaVilla</title>
+    <link rel="icon" href="../public/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="../public/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand d-flex align-items-center justify-content-center display-inline" href="../index.html#home">
+                <span>Judo Karate SommaVilla</span>
+                <img src="../public/logo.png" alt="Logo" height="35" class="ms-3">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="./judo.html">Judo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./karate.html">Karate</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./photos.html">Foto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-dark text-white text-center" style="background-image: url('../public/judo-header-bg.png'); background-size: cover; background-position: center; height: 20rem">
+        <div class="overlay d-flex flex-column align-items-center justify-content-center"
+                style="background: rgba(0, 0, 0, 0.4); height: 100%;">
+        <div class="container">
+            <h1 class="display-4">Judo</h1>
+            <div>
+                <a href="https://www.facebook.com/judokaratesommavilla" class="text-white me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                <a href="https://www.instagram.com/asd.judo.sommavilla/" class="text-white me-3"><i
+                        class="fab fa-instagram fa-2x"></i></a>
+                <a href="https://wa.me/393319381162" class="text-white"><i class="fab fa-whatsapp fa-2x"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container my-5">
+        
+        <section id="team" class="py-5">
+            <div class="container carousel-dark">
+                <div class="text-center mb-4">
+                    <h2>I Nostri Insegnanti Tecnici</h2>
+                    <p class="lead">Scopri il nostro team di esperti qualificati FIJLKAM che guidano la pratica del judo.</p>
+                </div>
+                <div class="position-relative">
+                    <!-- Contenitore con overflow -->
+                    <div class="d-flex overflow-auto" id="sliderContainerJudo"
+                        style="scroll-snap-type: x mandatory; white-space: nowrap;">
+                        <!-- Card insegnanti -->
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/doriano_cordioli.jpg" class="rounded-circle mb-3"
+                                    alt="Doriano Cordioli"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Doriano Cordioli</h5>
+                                <p class="card-text m-0">Maestro Benemerito di Judo</p>
+                                <p class="card-text m-0">7° Dan</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/giancarlo_zocca.jpg" class="rounded-circle mb-3" alt="Giancarlo Zocca"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Giancarlo Zocca</h5>
+                                <p class="card-text m-0">Maestro di Judo</p>
+                                <p class="card-text m-0">6° Dan</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/dario_vuerich.jpg" class="rounded-circle mb-3" alt="Dario Vuerich"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Dario Vuerich</h5>
+                                <p class="card-text m-0">Maestro di Judo</p>
+                                <p class="card-text m-0">5° Dan</p>
+                                <p class="card-text m-0">1° Dan di Ju-Jitsu</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/paolo_menini.jpeg" class="rounded-circle mb-3" alt="Paolo Menini"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Paolo Menini</h5>
+                                <p class="card-text m-0">Allenatore di Judo</p>
+                                <p class="card-text m-0">3° Dan</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/ales_spazian.jpg" class="rounded-circle mb-3" alt="Ales Spazian"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Ales Spazian</h5>
+                                <p class="card-text m-0">Allenatore di Judo</p>
+                                <p class="card-text m-0">3° Dan</p>
+                                <p class="card-text m-0">Istruttore MGA 2° livello</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/luca_bonizzoni.jpeg" class="rounded-circle mb-3" alt="Luca Bonizzoni"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Luca Bonizzoni</h5>
+                                <p class="card-text m-0">Allenatore di Judo</p>
+                                <p class="card-text m-0">2° Dan</p>
+                            </div>
+                        </div>
+                        <div class="d-inline-block mx-4">
+                            <div class="d-flex flex-column align-items-center p-3">
+                                <img src="../public/mirco_demarchi.jpg" class="rounded-circle mb-3" alt="Mirco De Marchi"
+                                    style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #787878;">
+                                <h5 class="card-title mb-2">Mirco De Marchi</h5>
+                                <p class="card-text m-0">Allenatore di Judo</p>
+                                <p class="card-text m-0">2° Dan</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pulsanti di scorrimento -->
+                    <button onclick="scrollSliderLeft()"
+                        class="carousel-control-prev d-flex position-absolute top-50 start-0 translate-middle-y"
+                        type="button" aria-label="Previous" style="width: auto">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button onclick="scrollSliderRight()"
+                        class="carousel-control-next d-flex position-absolute top-50 end-0 translate-middle-y"
+                        type="button" aria-label="Next" style="width: auto">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2>Corsi di Judo</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Luogo</th>
+                            <th>Giorno</th>
+                            <th>Orario</th>
+                            <th>Insegnante</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Giovani (9 - 12 anni)</td>
+                            <td>Sommacampagna</td>
+                            <td>Lunedì e Giovedì</td>
+                            <td>17:30-18:30</td>
+                            <td>Doriano</td>
+                        </tr>
+                        <tr>
+                            <td>Agonisti</td>
+                            <td>Sommacampagna</td>
+                            <td>Lunedì e Giovedì</td>
+                            <td>18:30-20:00</td>
+                            <td>Paolo</td>
+                        </tr>
+                        <tr>
+                            <td>Adulti (&gt; 18 anni)</td>
+                            <td>Sommacampagna</td>
+                            <td>Lunedì e Giovedì</td>
+                            <td>20:00-21:30</td>
+                            <td>Dario</td>
+                        </tr>
+                        <tr>
+                            <td>Bambini (6 - 9 anni)</td>
+                            <td>Villafranca</td>
+                            <td>Martedì e Venerdì</td>
+                            <td>17:00-18:00</td>
+                            <td>Dario</td>
+                        </tr>
+                        <tr>
+                            <td>Adulti (&gt; 18 anni)</td>
+                            <td>Villafranca</td>
+                            <td>Martedì e Venerdì</td>
+                            <td>18:00-19:00</td>
+                            <td>Dario</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2>Sedi</h2>
+            <p class="text-muted">Judo si svolge sia a Sommacampagna che a Villafranca, controlla gli orari dei corsi e le categorie per scoprire quello più adatto a te.</p>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sommacampagna</h5>
+                            <p class="card-text">Scuola Secondaria Dante Alighieri, Via Campagnol, 18</p>
+                            <div style="height:300px;border:1px solid #ddd;">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.229213712095!2d10.846458276460671!3d45.4047172374052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4781e702384d7235%3A0x5aa8634bc6a8e7de!2sScuola%20Secondaria%20Dante%20Alighieri%20di%20Sommacampagna!5e0!3m2!1sit!2sit!4v1731929609668!5m2!1sit!2sit"
+                                    width="100%" height="100%" style="border:0;" allowfullscreen=""
+                                    loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Villafranca</h5>
+                            <p class="card-text">Palazzetto dello Sport, Via della Speranza, Villafranca di Verona</p>
+                            <div style="height:300px;border:1px solid #ddd;">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2803.704290365727!2d10.828033876458349!3d45.35478124073237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4781ddcc1c78bd8d%3A0x5c78a568fdcdc26e!2sPalazzetto%20dello%20Sport!5e0!3m2!1sit!2sit!4v1731929538439!5m2!1sit!2sit"
+                                    width="100%" height="100%" style="border:0;" allowfullscreen=""
+                                    loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Contatti</h5>
+                    <ul>
+                        <li>Doriano Cordioli - <a href="tel:+393491220173" class="text-white">349 122 0173</a></li>
+                        <li>Renzo Faccioli - <a href="tel:+393490066875 " class="text-white">349 006 6875 </a></li>
+                        <li>Paolo Menini - <a href="tel:+393495544506" class="text-white">349 5544 506</a></li>
+                    </ul>
+                    <p>Email: <a href="mailto:info@asdsommavilla.it" class="text-white">info@asdsommavilla.it</a></p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Seguici su</h5>
+                    <a href="https://www.facebook.com/judokaratesommavilla" class="text-white me-3"><i
+                            class="fab fa-facebook fa-2x"></i></a>
+                    <a href="https://www.instagram.com/asd.judo.sommavilla/" class="text-white me-3"><i
+                            class="fab fa-instagram fa-2x"></i></a>
+                    <a href="https://wa.me/393319381162" class="text-white"><i class="fab fa-whatsapp fa-2x"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function scrollSliderLeft() {
+            document.getElementById('sliderContainerJudo').scrollBy({
+                left: -300, // Modifica questo valore per regolare lo scorrimento
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollSliderRight() {
+            document.getElementById('sliderContainerJudo').scrollBy({
+                left: 300, // Modifica questo valore per regolare lo scorrimento
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
