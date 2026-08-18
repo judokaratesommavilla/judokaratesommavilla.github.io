@@ -1,0 +1,16 @@
+---
+// Cloudflare Web Analytics - beacon ufficiale (privacy-first, cookieless) opt-in.
+// Il beacon viene iniettato SOLO se e' configurato il token pubblico
+// PUBLIC_CF_WEB_ANALYTICS_TOKEN (non e' un segreto: compare nel bundle client,
+// come da documentazione Cloudflare).
+//
+// - SCRIPT defer da https://static.cloudflareinsights.com/beacon.min.js
+// - spa: true per le View Transitions (ClientRouter) di Astro
+// - il beacon NON scrive cookie e NON usa localStorage/sessionStorage,
+//   quindi non richiede un banner di consenso.
+const rawToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN as string | undefined)?.trim();
+const enabled = Boolean(rawToken);
+const beaconConfig = rawToken ? JSON.stringify({ token: rawToken, spa: true }) : '';
+---
+
+{enabled && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={beaconConfig}></script>}

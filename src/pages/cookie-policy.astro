@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contacts } from '../data/contacts';
+import { buildBreadcrumbs } from '../utils/seo';
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Cookie Policy', path: '/cookie-policy/' },
+  ]),
+];
+
+/** Classi comuni delle sezioni legali (evita ripetizioni). */
+const legal =
+  'legal-section reveal mb-[2.2rem] [&_h2]:mb-[0.7rem] [&_h2]:text-[1.4rem] [&_h3]:mt-4 [&_h3]:mb-[0.4rem] [&_h3]:text-[1.1rem] [&_p]:text-base [&_p]:text-text-muted [&_li]:text-base [&_li]:text-text-muted [&_ul]:pl-[1.2rem]';
+---
+
+<BaseLayout
+  title="Cookie Policy | ASD Judo Karate Sommavilla"
+  description="Cookie Policy di ASD Judo Karate Sommavilla: cookie e strumenti di misurazione utilizzati, Cloudflare Web Analytics cookieless e indicazioni sul consenso."
+  image="/og/default.jpg"
+  canonicalPath="/cookie-policy/"
+  jsonLd={jsonLd}
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">Cookie</span>
+      <h1 class="legal-title mt-[0.8rem] text-[clamp(2.4rem,5vw,3.8rem)]">Cookie Policy</h1>
+      <p class="legal-updated m-[0.5rem_0_1.5rem] text-[0.95rem] text-text-muted">
+        Ultimo aggiornamento: 18/08/2026 · Documento da verificare e adattare da un professionista.
+      </p>
+
+      <!-- <div class="legal-alert mb-8 rounded-sm border border-red-line bg-red-soft px-[1.3rem] py-4 text-[0.98rem] text-red-dark">
+        <strong>Nota importante.</strong> Questa pagina descrive esclusivamente i cookie e gli strumenti
+        effettivamente utilizzati da questo sito, verificati sul codice. Prima della pubblicazione va
+        revisionata da un professionista (titolare o consulente GDPR).
+      </div> -->
+
+      <article class={legal}>
+        <h2>1. Cosa sono i cookie</h2>
+        <p>
+          I cookie sono piccoli file di testo che un sito può salvare sul dispositivo dell'utente durante
+          la navigazione. Servono a garantire il funzionamento del sito o, in alcuni casi, a raccogliere
+          informazioni statistiche o di profilazione.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>2. Strumenti utilizzati da questo sito</h2>
+        <p>
+          Questo sito <strong>non utilizza cookie di profilazione</strong> e <strong>non utilizza cookie
+          pubblicitari</strong>. Non utilizza Google Analytics, Facebook Pixel, Meta Pixel, Google Tag
+          Manager né altri sistemi di advertising o di tracciamento a fini di profilazione.
+        </p>
+        <p>
+          La navigazione del sito non comporta l'installazione di cookie da parte di terze parti. Il sito
+          non incorpora mappe, video o widget social: verso Google Maps, Facebook, Instagram e WhatsApp
+          esistono soltanto link esterni.
+        </p>
+      </article>
+      <article class={legal}>
+        <h2>3. Cloudflare Web Analytics (strumento di misurazione)</h2>
+        <p>
+          Il sito utilizza <strong>Cloudflare Web Analytics</strong>, uno strumento di statistica realizzato
+          dal fornitore per raccogliere informazioni aggregate sulle visite (numero di pagine viste, tempo di
+          caricamento, Core Web Vitals, area approssimativa).
+        </p>
+        <p>
+          Cloudflare Web Analytics è <strong>cookieless</strong>: secondo la documentazione ufficiale del
+          fornitore il relativo script non scrive, non legge e non accede a cookie, localStorage,
+          sessionStorage o indexedDB, non identifica l'utente e non conserva l'indirizzo IP. Non registra
+          quindi informazioni che permettano di riconoscere e ricondurre i dati a una persona fisica.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>4. Modulo di contatto</h2>
+        <p>
+          L'invio del modulo di contatto avviene tramite il servizio <strong>Forminit</strong>, che riceve i
+          dati via email. Né il modulo né Forminit installano cookie sul dispositivo dell'utente, anche in
+          caso di invio del modulo.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>5. Perché non viene mostrato un banner sui cookie</h2>
+        <p>
+          Questo sito non mostra un banner di consenso ai cookie perché, nella configurazione adottata, non
+          utilizza cookie né strumenti che richiedono il consenso preventivo dell'utente ai sensi della
+          normativa applicabile: non installa cookie di profilazione o marketing e utilizza unicamente
+          Cloudflare Web Analytics nella modalità cookieless che non tratta dati personali. Se in futuro
+          venissero attivati strumenti che richiedono consenso, questa pagina e gli eventuali meccanismi di
+          consenso verranno aggiornati prima dell'attivazione.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>6. Link verso piattaforme esterne</h2>
+        <p>
+          Il sito contiene link verso pagine Facebook e Instagram della società, Google Maps, WhatsApp e
+          contatti email. Non vengono caricati embed o widget: l'utente viene reindirizzato verso le
+          piattaforme terze, alle quali si applicano le relative privacy e cookie policy.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>7. Come gestire o eliminare i cookie dal browser</h2>
+        <p>
+          I cookie eventualmente presenti sul dispositivo possono essere gestiti e cancellati dalle
+          impostazioni del browser, che consentono anche di impedirne l'installazione. Disabilitare i cookie
+          non compromette la navigazione di questo sito, che non ne dipende.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>8. Contatti</h2>
+        <p>
+          Per informazioni sui cookie e sul trattamento dei dati personali scrivi a{' '}
+          <a href={`mailto:${contacts.email}`} class="legal-link font-bold text-red no-underline hover:underline">{contacts.email}</a>.
+          Per la disciplina completa consulta la{' '}
+          <a href="/privacy-policy/" class="legal-link font-bold text-red no-underline hover:underline">Privacy Policy</a>.
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

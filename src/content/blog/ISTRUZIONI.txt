@@ -1,0 +1,20 @@
+# Directory degli articoli del blog (Astro Content Collection).
+
+# Come aggiungere un articolo:
+# 1. Crea un file `titolo-articolo.md` (o `.mdx`) in questa cartella.
+# 2. Aggiungi il frontmatter:
+#    ---
+#    title: "Titolo dell'articolo"
+#    description: "Breve descrizione per i motori di ricerca e le card."
+#    publishDate: 2026-01-15
+#    updatedDate: 2026-01-20   # opzionale
+#    author: "Nome Cognome"
+#    category: "News"          # Judo | Karate | Difesa Personale | Psicomotricità | News | Eventi | Società
+#    tags: ["judo", "bambini"]
+#    image: ./cover.jpg       # opzionale
+#    imageAlt: "Descrizione dell'immagine"
+#    draft: false
+#    ---
+# 3. Scrivi il contenuto in Markdown.
+
+# Lo schema è definito in src/content.config.ts.

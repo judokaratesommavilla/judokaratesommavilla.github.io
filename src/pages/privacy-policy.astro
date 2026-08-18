@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { contacts } from '../data/contacts';
+import { buildBreadcrumbs } from '../utils/seo';
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Privacy Policy', path: '/privacy-policy/' },
+  ]),
+];
+
+/** Email a cui rivolgersi per temi privacy (usare una casella dedicata se disponibile). */
+const privacyEmail = contacts.email;
+
+/** Classi comuni delle sezioni legali (evita ripetizioni). */
+const legal =
+  'legal-section reveal mb-[2.2rem] [&_h2]:mb-[0.7rem] [&_h2]:text-[1.4rem] [&_h3]:mt-4 [&_h3]:mb-[0.4rem] [&_h3]:text-[1.1rem] [&_p]:text-base [&_p]:text-text-muted [&_li]:text-base [&_li]:text-text-muted [&_ul]:pl-[1.2rem]';
+---
+
+<BaseLayout
+  title="Privacy Policy | ASD Judo Karate Sommavilla"
+  description="Privacy Policy di ASD Judo Karate Sommavilla: titolare del trattamento, dati raccolti, finalità, servizi di terze parti, diritti dell'interessato e reclamo al Garante."
+  image="/og/default.jpg"
+  canonicalPath="/privacy-policy/"
+  jsonLd={jsonLd}
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">Privacy</span>
+      <h1 class="legal-title mt-[0.8rem] text-[clamp(2.4rem,5vw,3.8rem)]">Privacy Policy</h1>
+      <p class="legal-updated m-[0.5rem_0_1.5rem] text-[0.95rem] text-text-muted">
+        Ultimo aggiornamento: 18/08/2026 · Documento da verificare e adattare da un professionista.
+      </p>
+
+      <!-- <div class="legal-alert mb-8 rounded-sm border border-red-line bg-red-soft px-[1.3rem] py-4 text-[0.98rem] text-red-dark">
+        <strong>Nota importante.</strong> Questa informativa descrive i trattamenti effettivamente presenti
+        su questo sito. Prima della pubblicazione va revisionata da un professionista (titolare o consulente
+        GDPR) e vanno completati i campi indicati tra parentesi quadre.
+      </div> -->
+
+      <article class={legal}>
+        <h2>1. Titolare del trattamento</h2>
+        <p>
+          Il titolare del trattamento è <strong>{site.name}</strong>, con sede legale in{' '}
+          <strong>{site.legalAddress}</strong>, codice fiscale <strong>93042000</strong>.
+        </p>
+        <p>
+          Per ogni richiesta relativa ai dati personali e all'esercizio dei propri diritti è possibile
+          scrivere a{' '}
+          <a href={`mailto:${privacyEmail}`} class="legal-link font-bold text-red no-underline hover:underline">{privacyEmail}</a>.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>2. Dati personali raccolti</h2>
+        <p>Il modulo di contatto raccoglie i seguenti dati:</p>
+        <ul>
+          <li>nome e cognome;</li>
+          <li>indirizzo email;</li>
+          <li>numero di telefono (facoltativo);</li>
+          <li>corso e sede di interesse;</li>
+          <li>contenuto del messaggio.</li>
+        </ul>
+        <p>
+          Il modulo utilizza <strong>Forminit</strong> per ricevere le richieste via email. I dati sono
+          trattati dal titolare e dal fornitore del servizio esclusivamente per gestire la richiesta.
+        </p>
+        <p>
+          Il sito non raccoglie dati personali tramite cookie di profilazione o strumenti pubblicitari.
+          Le statistiche di navigazione usano <strong>Cloudflare Web Analytics</strong>, uno strumento
+          cookieless che non registra dati personali (vedi la Cookie Policy).
+        </p>
+      </article>
+      <article class={legal}>
+        <h2>3. Finalità e base giuridica del trattamento</h2>
+        <p>I dati personali sono trattati per le seguenti finalità:</p>
+        <ul>
+          <li>
+            rispondere alle richieste di informazioni inviate tramite il modulo di contatto e fornire
+            informazioni sui corsi (base giuridica: esecuzione di misure precontrattuali su richiesta
+            dell'interessato, art. 6, par. 1, lett. b), GDPR);
+          </li>
+          <li>adempiere a obblighi previsti dalla legge (art. 6, par. 1, lett. c), GDPR);</li>
+          <li>tutelare i legittimi interessi del titolare (art. 6, par. 1, lett. f), GDPR).</li>
+        </ul>
+        <p>
+          L'eventuale consenso espresso selezionando la casella presente nel modulo costituisce un'ulteriore
+          base giuridica per la finalità di risposta alla richiesta ed è in ogni momento revocabile.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>4. Modalità di trattamento</h2>
+        <p>
+          I dati sono trattati con strumenti informatici e telematici, con misure di sicurezza adeguate a
+          garantirne la riservatezza, l'integrità e la disponibilità. Non vengono effettuati processi
+          decisionali automatizzati né profilazione.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>5. Conservazione dei dati</h2>
+        <p>
+          I dati delle richieste raccolte tramite il modulo sono
+          conservati per il tempo necessario a rispondere e, ove segue un rapporto con la società, per la
+          durata del rapporto e i successivi termini di legge.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>6. Destinatari e responsabili del trattamento</h2>
+        <p>I dati possono essere comunicati a soggetti che forniscono servizi strumentali al sito:</p>
+        <ul>
+          <li>
+            <strong>Aruba S.p.A.</strong> (Via Gulinelli 21/a, 44122 Ferrara (FE), Italia) - 
+            Gestione di infrastrutture di rete proprietarie e centri dati avanzati per aziende 
+            e Pubblica Amministrazione, erogazione di servizi fiduciari qualificati come 
+            Posta Elettronica Certificata (PEC), firma digitale e identità digitale SPID, 
+            registrazione di domini servizi di hosting e soluzioni di posta elettronica. 
+          </li>
+          <li>
+            <strong>Forminit</strong> (UXPLUS LTD, 86-90 Paul Street, 3rd Floor, EC2A 4NE, London, United Kingdom) - 
+            Gestione dei moduli di contatto e invio
+            delle richieste via email.
+          </li>
+          <li>
+            <strong>Cloudflare, Inc.</strong> (101 Townsend Street, San Francisco, CA 94107, Stati Uniti) -
+            Fornitura di Cloudflare Web Analytics
+            (statistiche di navigazione, nessun dato personale trattato).
+          </li>
+          <li>autorità competenti, ove previsto dalla legge.</li>
+        </ul>
+        <p>I dati non sono diffusi né venduti.</p>
+      </article>
+
+      <article class={legal}>
+        <h2>7. Trasferimento dei dati fuori dallo SEE</h2>
+        <p>
+          Alcuni fornitori (Cloudflare e Forminit) operano anche al di fuori
+          dello Spazio Economico Europeo. Ove ciò riguardi i dati, il trasferimento avviene sulla base di
+          garanzie adeguate ai sensi degli art. 44-49 GDPR (es. Standard Contractual Clauses)
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>8. Cloudflare Web Analytics</h2>
+        <p>
+          Il sito utilizza Cloudflare Web Analytics per conoscere il numero di visite e le performance delle
+          pagine. Lo strumento è <strong>cookieless</strong>: non usa cookie, localStorage o sessionStorage,
+          non identifica l'utente e l'indirizzo IP non viene conservato (modalità privacy-first del fornitore).
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>9. Link a piattaforme esterne</h2>
+        <p>
+          Il sito contiene semplici link verso Facebook, Instagram, WhatsApp e Google Maps. Selezionandoli si
+          abbandona il sito e si applicano le privacy e cookie policy dei soggetti terzi. Il sito non carica
+          embed né widget di tali piattaforme.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>10. Diritti dell'interessato</h2>
+        <p>Ai sensi della normativa applicabile, hai diritto di:</p>
+        <ul>
+          <li>accedere ai tuoi dati personali;</li>
+          <li>ottenere la rettifica o la cancellazione;</li>
+          <li>ottenere la limitazione del trattamento;</li>
+          <li>ottenere la portabilità dei dati;</li>
+          <li>opporti al trattamento;</li>
+          <li>revocare il consenso ove prestato;</li>
+          <li>proporre reclamo all'autorità di controllo.</li>
+        </ul>
+        <p>
+          Le richieste vanno inviate a{' '}
+          <a href={`mailto:${privacyEmail}`} class="legal-link font-bold text-red no-underline hover:underline">{privacyEmail}</a>.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>11. Reclamo al Garante</h2>
+        <p>
+          In caso di violazione hai diritto di proporre reclamo al Garante per la Protezione dei Dati
+          Personali (www.garanteprivacy.it), autorità di controllo italiana.
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

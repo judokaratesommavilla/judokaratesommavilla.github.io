@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
+import CTAButton from '../components/CTAButton.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+---
+
+<BaseLayout
+  title="Pagina non trovata | ASD Judo Karate Sommavilla"
+  description="La pagina che stai cercando non esiste. Torna alla home o scopri i corsi di Judo, Karate, Difesa Personale e Psicomotricità."
+  canonicalPath="/404/"
+  noindex
+>
+  <section class="notfound relative z-[1] flex min-h-[72vh] items-center bg-ink text-text-dark">
+    <BackgroundOrnaments dark />
+    <div class="container notfound__inner reveal relative py-16">
+      <span class="notfound__code absolute top-[-1rem] right-0 font-display text-[clamp(6rem,22vw,16rem)] font-bold leading-none text-white/5 select-none">404</span>
+      <span class="eyebrow">Ti sei allontanato dal tatami</span>
+      <h1 class="mt-[0.9rem] max-w-[20ch]">Questa pagina non esiste più.</h1>
+      <p class="mt-[1.1rem] max-w-[52ch] text-[1.1rem] text-text-dark-muted">
+        La pagina che stai cercando è stata spostata o non è mai esistita.
+        Torna alla home o scopri i nostri corsi.
+      </p>
+      <div class="notfound__actions mt-[1.8rem] flex flex-wrap gap-[0.8rem]">
+        <CTAButton label="Torna alla Home" href="/" />
+        <CTAButton label="Scopri i corsi" href="/sport/" variant="ghost" />
+        <WhatsAppButton courseName="i corsi" label="Chiedi su WhatsApp" variant="whatsapp" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

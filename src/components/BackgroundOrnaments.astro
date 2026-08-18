@@ -1,0 +1,358 @@
+---
+import judogiRaw from '../assets/icons/judogi.svg?raw';
+
+interface Props {
+  /** Variante "dark": forme per hero e sezioni scure (tinte chiare). */
+  dark?: boolean;
+  /**
+   * Quantità target di forme generate client-side.
+   * Default: 13 nelle sezioni scure (densità attuale), 28 in quelle chiare
+   * (numero maggiore, compensato da opacità più basse per non invadere).
+   */
+  count?: number;
+}
+
+const { dark = false, count = dark ? 13 : 28 } = Astro.props;
+
+/**
+ * Markup SVG dell'icona karategi, letto raw a build time e iniettato in un
+ * <template> inerte che il client clona per ogni icona generata a runtime.
+ * Il fill è `currentColor` (modificato dall'originale `#000`) così le classi
+ * di colore/opacità Tailwind valgono anche per le icone. Titolo e descrizione
+ * vengono rimossi per evitare id duplicati nei cloni.
+ */
+const judogiMarkup = judogiRaw
+  .replace(/<title[^>]*>[\s\S]*?<\/title>/, '')
+  .replace(/<desc[^>]*>[\s\S]*?<\/desc>/, '')
+  .replace(/\s+aria-labelledby="[^"]*"/, '');
+
+const sceneClass = dark
+  ? 'bg-scene bg-scene--hero pointer-events-none absolute inset-0 z-0 overflow-hidden'
+  : 'bg-scene pointer-events-none absolute inset-0 -z-10 overflow-hidden';
+---
+
+<!--
+  Sfondo decorativo generato client-side.
+  Il contenitore espone i parametri (data-bg-count / data-bg-dark) che il
+  modulo condiviso usa per creare e animare le forme a runtime.
+  Il <template> con l'icona SVG resta inerte e viene clonato per ogni icona.
+-->
+<div
+  class={sceneClass}
+  data-bg-scene
+  data-bg-dark={dark ? 'true' : 'false'}
+  data-bg-count={count}
+  aria-hidden="true"
+>
+  <template data-bg-icon="judogi" set:html={judogiMarkup}></template>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  /**
+   * Sfondo decorativo — animazione GSAP.
+   *
+   * Ogni forma usa tre livelli annidati, un canale `transform` per livello,
+   * così fluttuazione, parallasse e hover non entrano mai in conflitto:
+   *   - `.bg-el`        → hover: scale (timeline GSAP)
+   *   - `.bg-el__float` → fluttuazione continua: x / y / rotation (GSAP)
+   *   - `.bg-el__mouse` → parallasse dal mouse: x / y (gsap.quickTo)
+   *
+   * L'hover NON usa `mouseenter`/`pointer-events` (falliscono quando la forma
+   * è coperta dal contenuto: hero, container z-[1], card) ma un hit-test
+   * geometrico in screen-space su `mousemove` + controllo periodico, così lo
+   * scale-over risponde in TUTTE le sezioni. Su hover la fluttuazione viene
+   * messa in pausa, la parallasse si assesta al centro (quickTo(0, 0)) e una
+   * timeline scala la forma facendola "respirare" (yoyo infinito). Appena il
+   * cursore esce, tutto riparte in modo fluido.
+   *
+   * Il modulo è unico (Astro lo deduplica tra le istanze) e si reinizializza
+   * su `astro:page-load` (evento dispatchato su `document`, non `window`):
+   * prima di ogni init i tween GSAP vengono eliminati (evita duplicati).
+   */
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const SHAPE_KINDS = ['ring', 'dot', 'cross', 'arc', 'triangle', 'diamond', 'stroke', 'icon'] as const;
+  type ShapeKind = (typeof SHAPE_KINDS)[number];
+
+  // Colori statici (stringhe letterali che Tailwind v4 rileva a build time).
+  // Opacità contenute: forme meno invasive ma ancora percepibili.
+  const LIGHT_COLORS = ['text-ink/30', 'text-ink/20', 'text-ink/10', 'text-red/50', 'text-red/30', 'text-red/20'];
+  const DARK_COLORS = ['text-white/20', 'text-white/15', 'text-white/12', 'text-red/45', 'text-red/35', 'text-red/25'];
+
+  // Parallasse: traslazione massima (px) e durata dello smoothing (GSAP).
+  const MAX_SHIFT = 40;
+  const PARALLAX_DURATION = 1;
+
+  // Fluttuazione idle: durata per direzione del yoyo (secondi), molto lenta.
+  const FLOAT_MIN = 6;
+  const FLOAT_MAX = 10;
+
+  // Hover: scala di base e picco del "respiro".
+  const SCALE_HOVER = 1.4;
+  const SCALE_PULSE = 1.6;
+
+  // Hit-test hover in screen-space: tolleranza in ingresso (px) e isteresi
+  // in uscita (px) per evitare sfarfallii sul bordo delle forme.
+  const HOVER_PAD = 12;
+  const HOVER_EXIT_PAD = 26;
+
+  const mouse = { x: 0, y: 0 };
+  let controllers = new Map<HTMLElement, ShapeController>();
+  let bound = false;
+  // Ultima posizione nota del cursore (usata dal controllo periodico).
+  let lastPointer = { x: 0, y: 0, has: false };
+
+  interface ShapeController {
+    el: HTMLElement;
+    floatEl: HTMLElement;
+    mouseEl: HTMLElement;
+    depth: number;
+    hovered: boolean;
+    floatTween: gsap.core.Tween | null;
+    hoverTl: gsap.core.Timeline | null;
+    leaveTween: gsap.core.Tween | null;
+    xTo: gsap.QuickToFunc | null;
+    yTo: gsap.QuickToFunc | null;
+  }
+
+  /* --- Utility random --- */
+
+  function rand(min: number, max: number): number {
+    return min + Math.random() * (max - min);
+  }
+
+  function pick<T>(arr: readonly T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  /* --- Generazione forme --- */
+
+  function createShape(dark: boolean, iconTemplate?: HTMLTemplateElement): HTMLElement {
+    const kind: ShapeKind = pick(SHAPE_KINDS);
+
+    const el = document.createElement('div');
+    el.className = `bg-el ${dark ? pick(DARK_COLORS) : pick(LIGHT_COLORS)}`;
+
+    // Posizione casuale dentro la scena.
+    el.style.top = `${rand(4, 92).toFixed(1)}%`;
+    el.style.left = `${rand(2, 88).toFixed(1)}%`;
+
+    // Dimensione casuale e responsiva (clamp), più generosa per forme "grandi".
+    const big = kind === 'ring' || kind === 'arc' || kind === 'icon';
+    const minRem = rand(1.6, 3);
+    const vw = rand(big ? 4 : 2.2, big ? 14 : 7);
+    const maxRem = rand(big ? 5 : 3, big ? 14 : 7);
+    el.style.width = `clamp(${minRem.toFixed(1)}rem, ${vw.toFixed(1)}vw, ${maxRem.toFixed(1)}rem)`;
+
+    const floatEl = document.createElement('span');
+    floatEl.className = 'bg-el__float';
+
+    const mouseEl = document.createElement('span');
+    mouseEl.className = `bg-el__mouse shape-${kind}`;
+
+    if (kind === 'icon') {
+      const source = iconTemplate?.content.firstElementChild;
+      if (source) mouseEl.appendChild(source.cloneNode(true));
+    }
+
+    floatEl.appendChild(mouseEl);
+    el.appendChild(floatEl);
+
+    return el;
+  }
+
+  function bindShape(el: HTMLElement): void {
+    const floatEl = el.querySelector<HTMLElement>('.bg-el__float');
+    const mouseEl = el.querySelector<HTMLElement>('.bg-el__mouse');
+    if (!floatEl || !mouseEl) return;
+
+    const controller: ShapeController = {
+      el,
+      floatEl,
+      mouseEl,
+      depth: rand(0.4, 1),
+      hovered: false,
+      floatTween: null,
+      hoverTl: null,
+      leaveTween: null,
+      xTo: null,
+      yTo: null,
+    };
+
+    // Reduced motion: forme statiche, nessuna animazione e nessun hover.
+    if (!reduceMotion) {
+      // Fluttuazione continua: yoyo lentissimo tra origine e target casuale.
+      controller.floatTween = gsap.fromTo(
+        floatEl,
+        { x: 0, y: 0, rotation: 0 },
+        {
+          x: rand(-38, 38),
+          y: rand(-30, 30),
+          rotation: rand(-8, 8),
+          duration: rand(FLOAT_MIN, FLOAT_MAX),
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        },
+      );
+
+      // Parallasse: lo smoothing lo gestisce GSAP (niente loop manuale).
+      controller.xTo = gsap.quickTo(mouseEl, 'x', {
+        duration: PARALLAX_DURATION,
+        ease: 'power3.out',
+      });
+      controller.yTo = gsap.quickTo(mouseEl, 'y', {
+        duration: PARALLAX_DURATION,
+        ease: 'power3.out',
+      });
+    }
+
+    controllers.set(el, controller);
+  }
+
+  /* --- Hover: pausa del movimento + scale + "respiro" --- */
+
+  function setHovered(el: HTMLElement, hovered: boolean): void {
+    const c = controllers.get(el);
+    if (!c || c.hovered === hovered) return;
+
+    c.hovered = hovered;
+    if (!c.floatTween || !c.xTo || !c.yTo) return; // reduced motion: niente animazioni
+    el.classList.toggle('is-hovered', hovered);
+
+    if (hovered) {
+      // Interrompe fluttuazione e parallasse (la parallasse si assesta al centro).
+      c.leaveTween?.kill();
+      c.leaveTween = null;
+      c.floatTween.pause();
+      c.xTo(0);
+      c.yTo(0);
+
+      // Ingrandimento morbido + "respiro" continuo.
+      c.hoverTl = gsap
+        .timeline()
+        .to(el, { scale: SCALE_HOVER, duration: 0.5, ease: 'power2.out' })
+        .to(el, { scale: SCALE_PULSE, duration: 1.3, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    } else {
+      // Ripristino graduale: scala originale e ripresa del movimento.
+      c.hoverTl?.kill();
+      c.hoverTl = null;
+      c.leaveTween = gsap.to(el, { scale: 1, duration: 0.5, ease: 'power2.out' });
+      c.floatTween.resume();
+    }
+  }
+
+  function buildScene(scene: HTMLElement): void {
+    if (scene.dataset.bgBuilt === 'true') return;
+    scene.dataset.bgBuilt = 'true';
+
+    const iconTemplate =
+      scene.querySelector<HTMLTemplateElement>('template[data-bg-icon="judogi"]') ?? undefined;
+
+    // Svuota la scena preservando il <template> dell'icona.
+    for (const child of Array.from(scene.children)) {
+      if (child.tagName.toLowerCase() !== 'template') child.remove();
+    }
+
+    const count = parseInt(scene.dataset.bgCount ?? '0', 10) || 0;
+    const dark = scene.dataset.bgDark === 'true';
+    for (let i = 0; i < count; i += 1) {
+      scene.appendChild(createShape(dark, iconTemplate));
+    }
+  }
+
+  /* --- Hover in screen-space (indipendente da stacking/pointer-events) --- */
+
+  function hitTestPointer(x: number, y: number): void {
+    for (const c of controllers.values()) {
+      const rect = c.el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+
+      const inside =
+        x >= rect.left - HOVER_PAD &&
+        x <= rect.right + HOVER_PAD &&
+        y >= rect.top - HOVER_PAD &&
+        y <= rect.bottom + HOVER_PAD;
+      const outside =
+        x < rect.left - HOVER_EXIT_PAD ||
+        x > rect.right + HOVER_EXIT_PAD ||
+        y < rect.top - HOVER_EXIT_PAD ||
+        y > rect.bottom + HOVER_EXIT_PAD;
+
+      // Isteresi: entra dentro +HOVER_PAD, esce solo oltre +HOVER_EXIT_PAD
+      // (nessuno sfarfallio sul bordo, anche durante lo scale-up dell'hover).
+      if (!c.hovered && inside) setHovered(c.el, true);
+      else if (c.hovered && outside) setHovered(c.el, false);
+    }
+  }
+
+  function clearHover(): void {
+    for (const el of Array.from(controllers.keys())) setHovered(el, false);
+  }
+
+  /* --- Reazione al mouse: hover + parallasse fluida (smoothing GSAP) --- */
+
+  function onMouseMove(event: MouseEvent): void {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = (event.clientY / window.innerHeight) * 2 - 1;
+    lastPointer = { x: event.clientX, y: event.clientY, has: true };
+
+    hitTestPointer(event.clientX, event.clientY);
+
+    // La parallasse è esclusa per le forme in hover (ferme al centro).
+    for (const c of controllers.values()) {
+      if (c.hovered || !c.xTo || !c.yTo) continue;
+      c.xTo(mouse.x * MAX_SHIFT * c.depth);
+      c.yTo(mouse.y * MAX_SHIFT * c.depth);
+    }
+  }
+
+  function bindMouse(): void {
+    if (bound || reduceMotion) return;
+    bound = true;
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+    // Quando il cursore lascia pagina/finestra, tutte le forme tornano a riposo.
+    document.addEventListener('mouseleave', clearHover);
+    window.addEventListener('blur', clearHover);
+
+    // Le forme fluttuano anche a cursore fermo: un controllo periodico
+    // (≈3 volte al secondo) mantiene lo stato di hover corretto, es. quando
+    // una forma "entra" sotto un cursore immobile.
+    window.setInterval(() => {
+      if (lastPointer.has) hitTestPointer(lastPointer.x, lastPointer.y);
+    }, 300);
+  }
+
+  function teardown(): void {
+    for (const c of controllers.values()) {
+      c.el.classList.remove('is-hovered');
+      c.floatTween?.kill();
+      c.hoverTl?.kill();
+      c.leaveTween?.kill();
+      c.xTo?.tween.kill();
+      c.yTo?.tween.kill();
+    }
+    controllers.clear();
+  }
+
+  function init(): void {
+    // Prima di ogni init eliminiamo i tween precedenti: al primo load e a ogni
+    // `astro:page-load` (il DOM può essere lo stesso o essere stato sostituito
+    // dalla View Transition), così non restano tween duplicati o in fuga.
+    teardown();
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>('[data-bg-scene]'));
+    for (const scene of scenes) {
+      buildScene(scene);
+      for (const el of scene.querySelectorAll<HTMLElement>('.bg-el')) bindShape(el);
+    }
+    bindMouse();
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
+

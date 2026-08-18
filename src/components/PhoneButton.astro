@@ -1,0 +1,39 @@
+---
+import { telLink } from '../utils/phone';
+
+interface Props {
+  /** Numero E.164. */
+  phone: string;
+  /** Testo mostrato (es. "340 259 2713"). */
+  display: string;
+  label?: string;
+  variant?: 'primary' | 'ghost' | 'ghost-dark' | 'light';
+  size?: 'sm' | 'lg';
+  class?: string;
+  iconOnly?: boolean;
+}
+
+const {
+  phone,
+  display,
+  label,
+  variant = 'ghost',
+  size,
+  class: className = '',
+  iconOnly = false,
+} = Astro.props;
+
+const text = label ?? display;
+const cls = ['btn', `btn--${variant}`, size ? `btn--${size}` : '', className].filter(Boolean).join(' ');
+---
+
+<a
+  href={telLink(phone)}
+  class={cls}
+  aria-label={iconOnly ? `Chiama ${display}` : undefined}
+>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+  </svg>
+  {iconOnly ? '' : <span>{text}</span>}
+</a>

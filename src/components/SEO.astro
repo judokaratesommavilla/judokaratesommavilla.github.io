@@ -1,0 +1,61 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Percorso o URL assoluto dell'immagine per Open Graph. */
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  /** Array di oggetti JSON-LD da iniettare. */
+  jsonLd?: object[];
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og/default.jpg',
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+  ogType = 'website',
+  jsonLd = [],
+} = Astro.props;
+
+const pageTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+const canonical = new URL(canonicalPath, site.url).toString();
+const ogImage = new URL(image, site.url).toString();
+const twitterHandle = undefined;
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
+
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+
+<meta name="theme-color" content="#14161a" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+
+<!-- Dati strutturati -->
+{jsonLd.map((obj) => (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />
+))}

@@ -1,0 +1,203 @@
+---
+import '@fontsource/saira-condensed/latin-500.css';
+import '@fontsource/saira-condensed/latin-600.css';
+import '@fontsource/saira-condensed/latin-700.css';
+import '@fontsource/oswald/latin-400.css';
+import '@fontsource/oswald/latin-500.css';
+import '@fontsource/oswald/latin-600.css';
+import '@fontsource-variable/source-sans-3/wght.css';
+import '../styles/global.css';
+
+import SEO from '../components/SEO.astro';
+import CloudflareAnalytics from '../components/CloudflareAnalytics.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
+import { ClientRouter } from 'astro:transitions';
+import ContactModal from '../components/vue/ContactModal.vue';
+import PhotoModal from '../components/vue/PhotoModal.vue';
+import { site } from '../data/site';
+import { buildOrganization, buildWebsite } from '../utils/seo';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  jsonLd?: object[];
+}
+
+const {
+  title,
+  description,
+  image,
+  canonicalPath,
+  noindex = false,
+  ogType = 'website',
+  jsonLd = [],
+} = Astro.props;
+
+const defaultJsonLd = [buildOrganization(), buildWebsite()];
+const pathname = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang={site.lang} class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      canonicalPath={canonicalPath}
+      noindex={noindex}
+      ogType={ogType}
+      jsonLd={[...defaultJsonLd, ...jsonLd]}
+    />
+    <CloudflareAnalytics />
+    <ClientRouter />
+    <script is:inline>
+      // JS attivo: rimuove `no-js` (impostato server-side) così il gating
+      // `html:not(.no-js)` attiva le animazioni reveal senza flash.
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Vai al contenuto principale</a>
+    <Navbar pathname={pathname} />
+    <main id="main">
+      <BackgroundOrnaments />
+      <slot />
+    </main>
+    <Footer />
+    <ContactModal client:load />
+    <PhotoModal client:load />
+    <script>
+      let header: HTMLElement | null = null;
+      const updateNav = () => {
+        header = document.getElementById('site-header');
+        if (!header) return;
+        header.classList.toggle('is-scrolled', window.scrollY > 24);
+      };
+
+      window.addEventListener('scroll', updateNav, { passive: true });
+      updateNav();
+
+      // Navigazione verso la pagina corrente: scroll to top in modo fluido,
+      // invece di ricaricare/ri renderizzare. Registro in capture phase così
+      // scavalca anche il router di Astro.
+      document.addEventListener(
+        'click',
+        (event) => {
+          const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+          if (!link || link.target) return;
+          const href = link.getAttribute('href');
+          if (!href || href.startsWith('#') || href.includes('#')) return;
+          let linkPath: string | null = null;
+          try {
+            linkPath = new URL(href, window.location.href).pathname;
+          } catch {
+            return;
+          }
+          if (linkPath === window.location.pathname) {
+            event.preventDefault();
+            event.stopPropagation();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        },
+        { capture: true },
+      );
+
+      // Apertura modale contatti da qualsiasi bottone [data-modal-open].
+      document.addEventListener('click', (event) => {
+        const trigger = (event.target as HTMLElement).closest('[data-modal-open]');
+        if (trigger) {
+          const course = trigger.getAttribute('data-course') || undefined;
+          const location = trigger.getAttribute('data-location') || undefined;
+          window.dispatchEvent(
+            new CustomEvent('sommavilla:open-modal', { detail: { course, location } }),
+          );
+          return;
+        }
+        const imageTrigger = (event.target as HTMLElement).closest('[data-image-open]');
+        if (imageTrigger) {
+          window.dispatchEvent(
+            new CustomEvent('sommavilla:open-image', {
+              detail: {
+                src: imageTrigger.getAttribute('data-src') || '',
+                alt: imageTrigger.getAttribute('data-alt') || '',
+                caption: imageTrigger.getAttribute('data-caption') || '',
+              },
+            }),
+          );
+          return;
+        }
+      });
+
+      // Dopo ogni navigazione SPA (Astro View Transitions) aggiorno lo stato della navbar.
+      document.addEventListener('astro:page-load', () => {
+        updateNav();
+      });
+    </script>
+
+    <script>
+      // Animazioni on-scroll sportive (IntersectionObserver + classi Tailwind).
+      // `html:not(.no-js)` è il gating: senza JS i contenuti restano visibili.
+      let revealObserver: IntersectionObserver | null = null;
+
+      const enableJs = () => {
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+      };
+
+      const initReveals = () => {
+        enableJs();
+
+        // Stagger opzionale: dentro [data-reveal-group] ogni elemento parte
+        // con un ritardo progressivo (effetto cascata), via --reveal-delay.
+        for (const group of document.querySelectorAll<HTMLElement>('[data-reveal-group]')) {
+          const items = Array.from(group.querySelectorAll<HTMLElement>('[data-reveal], .reveal'));
+          items.forEach((item, index) => {
+            item.style.setProperty('--reveal-delay', `${index * 90}ms`);
+          });
+        }
+
+        const targets = document.querySelectorAll<HTMLElement>('[data-reveal], .reveal');
+        if (!('IntersectionObserver' in window)) {
+          // Fallback: mostra tutto subito.
+          targets.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+        revealObserver?.disconnect();
+        revealObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                revealObserver?.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+        );
+        targets.forEach((el) => revealObserver?.observe(el));
+      };
+
+      // Riapplico `js` subito dopo lo swap del DOM (evita il flash) e riosservo
+      // i nuovi elementi: prima dopo lo swap (entrate immediate) e poi al
+      // termine della navigazione SPA.
+      document.addEventListener('astro:after-swap', () => {
+        enableJs();
+        initReveals();
+      });
+      initReveals();
+      document.addEventListener('astro:page-load', initReveals);
+    </script>
+  </body>
+</html>

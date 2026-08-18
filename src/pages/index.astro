@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteImage from '../components/SiteImage.astro';
+import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CourseCard from '../components/CourseCard.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import LocationCard from '../components/LocationCard.astro';
+import StartDates from '../components/StartDates.astro';
+import CtaSection from '../components/CtaSection.astro';
+import CTAButton from '../components/CTAButton.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { courses } from '../data/courses';
+import { locations } from '../data/locations';
+import { instructors } from '../data/instructors';
+import { story } from '../data/story';
+import { buildSportsActivityLocation } from '../utils/seo';
+
+const jsonLd = locations.map((location) => buildSportsActivityLocation(location));
+
+const instructorsQty = instructors.length;
+---
+
+<BaseLayout
+  title="ASD Judo Karate Sommavilla | Judo e Karate a Villafranca di Verona e Sommacampagna"
+  description="Judo, Karate, Difesa Personale e Psicomotricità a Villafranca di Verona e Sommacampagna. Percorsi di crescita dentro e fuori dal tatami con tecnici qualificati FIJLKAM."
+  image="/og/default.jpg"
+  jsonLd={jsonLd}
+>
+  <!-- HERO -->
+  <section class="hero relative z-[1] min-h-[100vh] min-h-dvh bg-ink-deep text-text-dark max-[900px]:flex max-[900px]:flex-col">
+    <BackgroundOrnaments dark />
+    <div
+      class="hero__media absolute top-0 bottom-0 left-0 grid h-full w-1/2 place-items-stretch overflow-hidden before:absolute before:inset-0 before:z-[1] before:content-[''] before:bg-[rgba(13,15,18,0.42)] after:absolute after:inset-y-0 after:right-0 after:z-[1] after:pointer-events-none after:content-[''] after:w-[16%] after:bg-[linear-gradient(to_right,transparent,var(--color-ink-deep))] max-[900px]:relative max-[900px]:h-[42vh] max-[900px]:w-full"
+    >
+      <SiteImage
+        src="gallery/villafranca2"
+        alt="ASD Judo Karate Sommavilla"
+        loading="eager"
+        fetchpriority="high"
+        sizes="50vw"
+        class="absolute inset-0 h-full w-full object-cover object-center"
+      />
+    </div>
+    <div class="hero__content relative z-[1] ml-[50vw] flex min-h-[100vh] min-h-dvh items-center p-[clamp(3rem,7vh,6rem)_var(--gutter)] max-[900px]:ml-0 max-[900px]:min-h-0 max-[900px]:flex-1 max-[900px]:justify-center max-[900px]:py-12">
+      <div class="hero__inner flex w-full max-w-[38rem] flex-col items-start max-[900px]:max-w-none">
+        <span class="eyebrow eyebrow--light">ASD Judo Karate Sommavilla</span>
+        <h1 class="hero__title mt-[0.85rem] text-[clamp(2.7rem,7.5vw,4.9rem)] leading-[1.15]">
+          Disciplina.<br />Movimento.<br /><span class="text-red">Crescita.</span>
+        </h1>
+        <p class="hero__subtitle mt-4 max-w-[46ch] text-[clamp(1.05rem,2vw,1.28rem)] text-text-dark-muted">
+          Judo, Karate e Arti Marziali a Villafranca di Verona e Sommacampagna.
+          Percorsi di crescita dentro e fuori dal tatami.
+        </p>
+        <div class="hero__actions mt-[1.6rem] flex flex-wrap gap-[0.8rem]">
+          <CTAButton label="Scopri i corsi" href="/sport/" size="lg" />
+          <CTAButton label="Contattaci" variant="ghost-dark" size="lg" />
+        </div>
+        <p class="hero__meta mt-[1.4rem] font-display text-[clamp(0.82rem,1.4vw,0.95rem)] font-semibold tracking-[0.22em] text-text-dark-muted">
+          <span class="text-red">2 SEDI</span> · <span class="text-white">4 CORSI</span> · <span class="text-white">UNA SOLA PASSIONE</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container">
+      <div class="intro-grid grid grid-cols-[1.1fr_0.9fr] items-center gap-12 max-[860px]:grid-cols-1 reveal">
+        <SectionHeading
+          eyebrow="Benvenuti"
+          title="Un'arte marziale è molto più di uno sport."
+          text="Sul tatami si impara a cadere e a rialzarsi, a rispettare gli altri e a dare il meglio di sé. È un percorso educativo e sportivo che accompagna bambini, ragazzi e adulti."
+        />
+        <dl class="stats m-0 grid grid-cols-1 gap-px overflow-hidden rounded border border-line bg-line">
+          <div class="stats__item bg-white p-[1.4rem]">
+            <dt class="font-display text-[2.6rem] font-bold leading-none text-red">2</dt>
+            <dd class="mt-2 text-[0.95rem] text-text-muted">Sedi attive: Sommacampagna e Villafranca di Verona</dd>
+          </div>
+          <div class="stats__item bg-white p-[1.4rem]">
+            <dt class="font-display text-[2.6rem] font-bold leading-none text-red">4</dt>
+            <dd class="mt-2 text-[0.95rem] text-text-muted">Corsi: Judo, Karate, Difesa Personale, Psicomotricità</dd>
+          </div>
+          <div class="stats__item bg-white p-[1.4rem]">
+            <dt class="font-display text-[2.6rem] font-bold leading-none text-red">{instructorsQty}</dt>
+            <dd class="mt-2 text-[0.95rem] text-text-muted">Tecnici qualificati FIJLKAM</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORSI -->
+  <section class="section section--paper">
+    <div class="container">
+      <SectionHeading
+        eyebrow="I corsi"
+        title="Trova il tuo corso"
+        text="Quattro corsi, ognuno con la sua identità: dal judo, al karate, alla difesa personale, fino alla psicomotricità per i più piccoli."
+      />
+      <div class="courses-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {courses.map((course) => <CourseCard course={course} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- PERCHÉ LE ARTI MARZIALI -->
+  <section class="section section--dark tatami">
+    <BackgroundOrnaments dark />
+    <div class="container">
+      <div class="why-grid grid grid-cols-[1.15fr_0.85fr] items-center gap-14 max-[860px]:grid-cols-1">
+        <div class="why-media relative reveal">
+          <SiteImage
+            src="home/judo-rei"
+            alt="Bambini in allenamento di judo sul tatami con ASD Judo Karate Sommavilla"
+            width={1400}
+            aspectRatio="1 / 1"
+            sizes="(min-width: 1024px) 52vw, 100vw"
+            class="h-auto w-full rounded"
+          />
+          <span class="why-media__label absolute bottom-4 left-4 rounded-sm bg-red px-[0.9rem] py-[0.4rem] font-display text-[0.95rem] font-bold tracking-[0.08em] text-white uppercase">
+            Arti marziali — un percorso di crescita
+          </span>
+        </div>
+        <div class="why-body reveal">
+          <span class="eyebrow eyebrow--light">Perché le arti marziali</span>
+          <h2 class="mt-[0.8rem]">Non solo sport: è un percorso di crescita.</h2>
+          <p class="why-lead mt-[1.2rem] text-[1.1rem] leading-[1.6] text-text-dark-muted">
+            Ogni allenamento costruisce tecnica, disciplina e fiducia in te.
+            Valori che restano con te anche fuori dal tatami.
+          </p>
+          <div class="why-actions mt-[1.6rem] flex flex-wrap gap-[0.8rem]">
+            <CTAButton label="Scopri i nostri corsi" href="/sport/" />
+            <WhatsAppButton courseName="Judo" variant="ghost-dark" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIA -->
+  <section class="section">
+    <div class="container">
+      <div class="story-grid grid grid-cols-2 items-center gap-14 max-[860px]:grid-cols-1">
+        <div class="story-body reveal">
+          <SectionHeading eyebrow="La nostra storia" title={story.heading} />
+          <p class="story-text text-[1.05rem] text-text-muted">{story.paragraphs[0]}</p>
+          <p class="story-text text-[1.05rem] text-text-muted">{story.paragraphs[1]}</p>
+          <p class="story-text text-[1.05rem] text-text-muted">{story.paragraphs[story.paragraphs.length - 1]}</p>
+          <CTAButton label="Scopri chi siamo" href="/chi-siamo/" variant="ghost" />
+        </div>
+        <div class="story-media reveal">
+          <SiteImage
+            src="home/maestri"
+            alt="Atleti di ASD Judo Karate Sommavilla in allenamento"
+            width={1400}
+            aspectRatio="2 / 3"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="h-auto w-full rounded"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SEDI -->
+  <section class="section section--paper">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Le sedi"
+        title="Due sedi, una sola passione"
+        text="Ci alleniamo a Villafranca di Verona e a Sommacampagna, in strutture pensate per lo sport."
+      />
+      <div class="locations-grid grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {locations.map((location) => <LocationCard location={location} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- DATE INIZIO -->
+  <section class="section">
+    <div class="container">
+      <StartDates />
+    </div>
+  </section>
+
+  <RelatedPosts
+    match={['società', 'storia', 'judo', 'karate', 'difesa personale', 'eventi']}
+    fallback
+    limit={3}
+    title="Novità dal tatami"
+    eyebrow="Dal blog"
+  />
+
+  <!-- CTA FINALE -->
+  <CtaSection
+    eyebrow="Contattaci"
+    title="Il prossimo passo inizia sul tatami."
+    text="Scopri il corso più adatto a te o a tuo figlio e vieni a conoscerci. Ti rispondiamo noi."
+    primaryLabel="Chiedi informazioni"
+  />
+</BaseLayout>
+

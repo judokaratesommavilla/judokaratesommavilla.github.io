@@ -1,0 +1,205 @@
+---
+import type { Course } from '../data/types';
+import { locationMap } from '../data/locations';
+import { instructorMap } from '../data/instructors';
+import { formatDayMonth } from '../utils/dates';
+
+import PageHero from './PageHero.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import BackgroundOrnaments from './BackgroundOrnaments.astro';
+import SectionHeading from './SectionHeading.astro';
+import CourseSchedule from './CourseSchedule.astro';
+import InstructorCard from './InstructorCard.astro';
+import LocationCard from './LocationCard.astro';
+import FAQ from './FAQ.astro';
+import CtaSection from './CtaSection.astro';
+import CTAButton from './CTAButton.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import RelatedPosts from './RelatedPosts.astro';
+
+interface Props {
+  course: Course;
+}
+
+const { course } = Astro.props;
+
+/** Immagini della palestra (da src/assets/images/gallery) usate come hero delle pagine corso. */
+const heroImages: Record<string, string> = {
+  judo: 'courses/judo-hero',
+  karate: 'courses/karate-hero',
+  'difesa-personale': 'courses/self-defense-hero',
+  psicomotricita: 'courses/psicomotricita-hero',
+};
+
+const courseLocations = course.locations.map((slug) => locationMap[slug]);
+const instructors = course.instructorSlugs
+  .map((slug) => instructorMap[slug])
+  .filter((instructor) => instructor !== undefined);
+const scheduleDays = [...new Set(course.schedule.map((entry) => entry.days))];
+const nextStart = course.startDates.length
+  ? [...course.startDates].sort((a, b) => a.date.localeCompare(b.date))[0]
+  : undefined;
+---
+
+<PageHero
+  eyebrow={course.eyebrow}
+  title={course.seo.h1}
+  subtitle={course.tagline}
+  image={heroImages[course.slug] || course.image}
+  imageAlt={course.imageAlt}
+>
+  <CTAButton label={course.ctaLabel} course={course.slug} size="lg" />
+  <WhatsAppButton courseName={course.name} variant="ghost-dark" size="lg" />
+</PageHero>
+
+<!-- Introduzione + fatti chiave -->
+<section class="section">
+  <div class="container container--narrow">
+    <Breadcrumbs
+      items={[
+        { name: 'Sport', path: '/sport/' },
+        { name: course.name },
+      ]}
+    />
+    <p class="course-intro mb-8 mt-5 text-[clamp(1.15rem,2vw,1.4rem)] leading-[1.6] text-text">{course.intro}</p>
+    <dl class="course-facts m-0 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div class="fact-card flex items-center gap-[1.2rem] rounded border border-line border-l-4 border-l-red px-[1.9rem] py-[1.7rem] transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-card">
+        <span class="fact-card__icon inline-flex h-[2.8rem] w-[2.8rem] flex-none items-center justify-center rounded-sm bg-red-soft text-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[1.45rem] w-[1.45rem]"><path d="M12 21s-6.2-5.8-6.2-11a6.2 6.2 0 0 1 12.4 0c0 5.2-6.2 11-6.2 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <div>
+          <dt class="text-[0.8rem] font-bold tracking-[0.18em] text-text-muted uppercase">Sedi</dt>
+          <dd class="mt-[0.3rem] font-display text-[1.3rem] font-semibold tracking-[0.02em] text-text uppercase">{courseLocations.map((location) => location.name).join(' · ')}</dd>
+        </div>
+      </div>
+      <div class="fact-card flex items-center gap-[1.2rem] rounded border border-line border-l-4 border-l-red px-[1.9rem] py-[1.7rem] transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-card">
+        <span class="fact-card__icon inline-flex h-[2.8rem] w-[2.8rem] flex-none items-center justify-center rounded-sm bg-red-soft text-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[1.45rem] w-[1.45rem]"><circle cx="9" cy="8" r="3.2"/><path d="M3 20v-1a6 6 0 0 1 12 0v1"/><path d="M16 4.5a3 3 0 0 1 0 6"/><path d="M17.5 14a5 5 0 0 1 3.5 5v1"/></svg></span>
+        <div>
+          <dt class="text-[0.8rem] font-bold tracking-[0.18em] text-text-muted uppercase">Per chi</dt>
+          <dd class="mt-[0.3rem] font-display text-[1.3rem] font-semibold tracking-[0.02em] text-text uppercase">{course.targets.join(' · ')}</dd>
+        </div>
+      </div>
+      <div class="fact-card flex items-center gap-[1.2rem] rounded border border-line border-l-4 border-l-red px-[1.9rem] py-[1.7rem] transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-card">
+        <span class="fact-card__icon inline-flex h-[2.8rem] w-[2.8rem] flex-none items-center justify-center rounded-sm bg-red-soft text-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[1.45rem] w-[1.45rem]"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
+        <div>
+          <dt class="text-[0.8rem] font-bold tracking-[0.18em] text-text-muted uppercase">Giorni</dt>
+          <dd class="mt-[0.3rem] font-display text-[1.3rem] font-semibold tracking-[0.02em] text-text uppercase">{scheduleDays.join(' · ')}</dd>
+        </div>
+      </div>
+      <div class="fact-card flex items-center gap-[1.2rem] rounded border border-line border-l-4 border-l-red px-[1.9rem] py-[1.7rem] transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-card">
+        <span class="fact-card__icon inline-flex h-[2.8rem] w-[2.8rem] flex-none items-center justify-center rounded-sm bg-red-soft text-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[1.45rem] w-[1.45rem]"><circle cx="12" cy="14" r="6"/><path d="M8.5 8.5 6 2l6 2 6-2-2.5 6.5"/><circle cx="12" cy="14" r="2" fill="currentColor"/></svg></span>
+        <div>
+          <dt class="text-[0.8rem] font-bold tracking-[0.18em] text-text-muted uppercase">Tecnici</dt>
+          <dd class="mt-[0.3rem] font-display text-[1.3rem] font-semibold tracking-[0.02em] text-text uppercase">{instructors.length} tecnici qualificati</dd>
+        </div>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- Cosa si impara -->
+<section class="section section--dark tatami">
+  <BackgroundOrnaments dark />
+  <div class="container">
+    <SectionHeading eyebrow="Il programma" title="Cosa si impara" text={`Nel percorso di ${course.name} si costruiscono tecnica e consapevolezza, un allenamento alla volta.`} />
+    <ul class="learn-list m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2">
+      {course.whatYouLearn.map((item) => (
+        <li
+          class="learn-list__item reveal flex items-start gap-[1.1rem] rounded border border-line-dark bg-ink-soft px-[1.9rem] py-[1.7rem] text-[1.08rem] text-text-dark transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:border-red-line hover:bg-ink"
+        >
+          <span class="learn-list__check mt-[0.12rem] flex-none text-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-[1.5rem] w-[1.5rem]"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- Benefici -->
+<section class="section">
+  <div class="container">
+    <SectionHeading
+      eyebrow="I benefici"
+      title={`Perché scegliere il ${course.name.toLowerCase()}`}
+      text="Sul tatami si impara qualcosa che resta per tutta la vita: rispetto, disciplina e fiducia in sé."
+    />
+    <div class="benefits-grid grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {course.benefits.map((benefit) => (
+        <article
+          class="benefit reveal rounded border border-line border-l-4 border-l-red bg-white px-[2.1rem] py-8 transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-[6px] hover:shadow-soft hover:bg-[linear-gradient(135deg,var(--color-white),var(--color-red-soft))]"
+        >
+          <span class="benefit__marker mb-4 block h-[1.4rem] w-[1.4rem] bg-red [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]" aria-hidden="true"></span>
+          <h3 class="text-[1.6rem]">{benefit.title}</h3>
+          <p class="mt-[0.6rem] text-[1.05rem] leading-[1.6] text-text-muted">{benefit.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Orari -->
+<section class="section section--paper">
+  <div class="container">
+    <SectionHeading
+      eyebrow="Orari"
+      title={`Orari dei corsi di ${course.name}`}
+      text="Allenamenti settimanali organizzati per fascia d'età. Gli orari possono subire variazioni: contattaci per conferma."
+    />
+    <CourseSchedule course={course} />
+    {nextStart && (
+      <p class="start-note mt-6 rounded-sm border border-dashed border-line px-[1.3rem] py-4 text-base text-text-muted">
+        Prossimo inizio: <strong class="text-text">{nextStart.label}</strong> — {formatDayMonth(nextStart.date)} · {locationMap[nextStart.location].name}
+      </p>
+    )}
+    {course.fee && (
+      <p class="start-note mt-6 rounded-sm border border-dashed border-line px-[1.3rem] py-4 text-base text-text-muted">
+        Quota indicativa: <strong class="text-text">{course.fee}</strong> · dato configurabile, contattaci per il dettaglio aggiornato.
+      </p>
+    )}
+  </div>
+</section>
+
+<!-- Sedi -->
+<section class="section">
+  <div class="container">
+    <SectionHeading eyebrow="Dove" title="Dove ci alleniamo" text={`I corsi di ${course.name} si svolgono nelle sedi di ASD Judo Karate Sommavilla.`} />
+    <div
+      class:list={[
+        'grid gap-6',
+        courseLocations.length === 1 ? 'grid-cols-1 max-w-[560px]' : 'grid-cols-1 sm:grid-cols-2',
+      ]}
+    >
+      {courseLocations.map((location) => <LocationCard location={location} />)}
+    </div>
+  </div>
+</section>
+
+<!-- Tecnici -->
+<section class="section section--dark">
+  <BackgroundOrnaments dark />
+  <div class="container">
+    <SectionHeading
+      eyebrow="Lo staff"
+      title={`I tecnici di ${course.name}`}
+      text={course.slug === 'judo' ? 'I tecnici di judo della società sono qualificati dalla federazione ufficiale FIJLKAM.' : 'Tecnici qualificati che accompagnano ogni atleta lungo il percorso.'}
+    />
+    <div class="instructors-grid grid grid-cols-2 gap-[1.2rem] sm:grid-cols-3 lg:grid-cols-4">
+      {instructors.map((instructor) => <InstructorCard instructor={instructor} />)}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section--sm">
+  <div class="container">
+    <FAQ faqs={course.faqs} title={`Domande frequenti su ${course.name}`} />
+  </div>
+</section>
+
+<RelatedPosts match={[course.name, course.slug]} fallback={false} title={`Dal blog su ${course.name}`} eyebrow="Approfondimenti" />
+
+<CtaSection
+  eyebrow="Contattaci"
+  title="Il prossimo passo inizia sul tatami."
+  text="Scopri il corso più adatto a te o a tuo figlio e vieni a conoscerci. Ti rispondiamo noi."
+  primaryLabel={course.ctaLabel}
+  course={course.slug}
+/>

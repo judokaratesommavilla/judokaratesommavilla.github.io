@@ -1,0 +1,133 @@
+---
+import CTAButton from './CTAButton.astro';
+import MobileMenu from './vue/MobileMenu.vue';
+import { mainNavigation } from '../data/navigation';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+
+function isActive(item: { href: string }): boolean {
+  if (item.href === '/') return pathname === '/';
+  return pathname === item.href || pathname.startsWith(item.href);
+}
+---
+
+<header
+  class="site-header group sticky top-0 z-[800] border-b border-line bg-[rgba(246,244,239,0.92)] text-text transition-[background,border-color] duration-[280ms] ease-[var(--ease)] [&.is-scrolled]:border-line-dark [&.is-scrolled]:bg-[rgba(13,15,18,0.96)] [&.is-scrolled]:text-text-dark"
+  id="site-header"
+>
+  <div class="container flex h-[var(--nav-height)] items-center gap-6">
+    <a href="/" class="brand mr-auto inline-flex items-center gap-[0.7rem] no-underline" aria-label="ASD Judo Karate Sommavilla — home">
+      <span class="relative block h-[2.7rem] w-[2.4rem] flex-none">
+        <img
+          class="absolute inset-0 h-full w-full object-contain opacity-100 transition-opacity duration-[280ms] ease-[var(--ease)] group-[.is-scrolled]:opacity-0"
+          src="/logo.svg"
+          alt=""
+          width="40"
+          height="45"
+          loading="eager"
+          decoding="async"
+        />
+        <img
+          class="absolute inset-0 h-full w-full object-contain opacity-0 transition-opacity duration-[280ms] ease-[var(--ease)] group-[.is-scrolled]:opacity-100"
+          src="/logo_white.svg"
+          alt=""
+          width="40"
+          height="45"
+          loading="eager"
+          decoding="async"
+        />
+      </span>
+      <span class="brand__text flex flex-col leading-[1.05] text-ink transition-colors duration-[280ms] ease-[var(--ease)] group-[.is-scrolled]:text-text-dark">
+        <strong class="font-display text-[1.15rem] font-bold tracking-[0.04em] uppercase">
+          Judo Karate
+        </strong>
+        <em class="font-display text-[0.82rem] font-semibold tracking-[0.28em] text-red uppercase not-italic">
+          Sommavilla
+        </em>
+      </span>
+    </a>
+
+    <nav class="nav hidden lg:block" aria-label="Navigazione principale">
+      <ul class="m-0 flex list-none items-center gap-[0.25rem] p-0">
+        {mainNavigation.map((item) => (
+          <li
+            class:list={['group/item relative', { 'has-dropdown': item.children?.length, 'is-active': isActive(item) }]}
+          >
+            {item.children ? (
+              <>
+                <a
+                  href={item.href}
+                  class="nav__link inline-flex items-center gap-[0.3rem] rounded-sm px-[0.9rem] py-[0.55rem] font-display text-[1.05rem] font-semibold tracking-[0.08em] text-ink uppercase no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:text-red group-[.is-scrolled]:text-text-dark-muted group-[.is-scrolled]:hover:text-white"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-nav-toggle
+                >
+                  {item.label}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    class="nav__chevron h-[0.85rem] w-[0.85rem] transition-transform duration-[280ms] ease-[var(--ease)] group-hover/item:rotate-180 group-[.is-open]/item:rotate-180"
+                  >
+                    <path d="M7.4 9.4 12 14l4.6-4.6L18 10.8 12 16.8 6 10.8z" />
+                  </svg>
+                </a>
+                <ul
+                  class="dropdown invisible absolute top-[calc(100%+0.4rem)] left-1/2 m-0 min-w-[15rem] list-none -translate-x-1/2 translate-y-[6px] rounded border border-line bg-white p-[0.5rem] opacity-0 shadow-soft transition-all duration-[280ms] ease-[var(--ease)] group-hover/item:visible group-hover/item:translate-y-0 group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:translate-y-0 group-focus-within/item:opacity-100 group-[.is-open]/item:visible group-[.is-open]/item:translate-y-0 group-[.is-open]/item:opacity-100 group-[.is-scrolled]:border-line-dark group-[.is-scrolled]:bg-ink-soft"
+                  data-nav-dropdown
+                >
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block rounded-sm px-[0.85rem] py-[0.55rem] font-display text-base font-semibold tracking-[0.05em] text-text-muted uppercase no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:bg-red-soft hover:text-ink group-[.is-scrolled]:text-text-dark-muted group-[.is-scrolled]:hover:bg-[rgba(255,255,255,0.06)] group-[.is-scrolled]:hover:text-white"
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <a
+                href={item.href}
+                class="nav__link inline-flex items-center gap-[0.3rem] rounded-sm px-[0.9rem] py-[0.55rem] font-display text-[1.05rem] font-semibold tracking-[0.08em] text-ink uppercase no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:text-red aria-current:text-red group-[.is-scrolled]:text-text-dark-muted group-[.is-scrolled]:hover:text-white group-[.is-scrolled]:aria-current:text-white"
+                aria-current={isActive(item) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <CTAButton label="Prova un corso" size="sm" class="hidden lg:inline-flex" />
+
+    <MobileMenu client:visible />
+  </div>
+</header>
+<script>
+  // Stato aria-expanded + classe open per il dropdown "Sport".
+  const toggles = document.querySelectorAll<HTMLAnchorElement>('[data-nav-toggle]');
+  for (const toggle of toggles) {
+    const dropdown = toggle.nextElementSibling as HTMLElement | null;
+    const item = toggle.closest('.nav__item') as HTMLElement | null;
+    if (!dropdown || !item) continue;
+    const set = (open: boolean) => {
+      item.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    item.addEventListener('mouseenter', () => set(true));
+    item.addEventListener('mouseleave', () => set(false));
+    item.addEventListener('focusin', () => set(true));
+    item.addEventListener('focusout', (event: FocusEvent) => {
+      if (!item.contains(event.relatedTarget as Node | null)) set(false);
+    });
+  }
+</script>
+

@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CourseLayout from '../../components/CourseLayout.astro';
+import { courseMap } from '../../data/courses';
+import { locations } from '../../data/locations';
+import { buildBreadcrumbs, buildCourse, buildFaqPage, buildSportsActivityLocation } from '../../utils/seo';
+
+const course = courseMap['psicomotricita'];
+const courseLocations = locations.filter((location) => course.locations.includes(location.slug));
+
+const jsonLd = [
+  buildCourse(course, locations),
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Sport', path: '/sport/' },
+    { name: course.name, path: `/sport/${course.slug}/` },
+  ]),
+  buildFaqPage(course.faqs),
+  ...courseLocations.map((location) => buildSportsActivityLocation(location)),
+];
+---
+
+<BaseLayout
+  title={course.seo.title}
+  description={course.seo.description}
+  image="/og/psicomotricita.jpg"
+  canonicalPath={`/sport/${course.slug}/`}
+  jsonLd={jsonLd}
+>
+  <CourseLayout course={course} />
+</BaseLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0 H0 V80" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b1e23"/>
+      <stop offset="1" stop-color="#101215"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#grid)"/>
+  <rect x="60" y="60" width="90" height="90" fill="none" stroke="#c8102e" stroke-width="4"/>
+  <circle cx="400" cy="330" r="120" fill="none" stroke="#f5f3ee" stroke-opacity="0.85" stroke-width="6"/>
+  <rect x="400" y="210" width="120" height="120" fill="#c8102e"/>
+  <text x="400" y="560" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#f5f3ee" letter-spacing="10">FOTO IN ARRIVO</text>
+  <text x="400" y="610" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#9aa1aa" letter-spacing="4">ASD JUDO KARATE SOMMAVILLA</text>
+</svg>

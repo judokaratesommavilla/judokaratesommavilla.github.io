@@ -1,0 +1,54 @@
+---
+interface Props {
+  label: string;
+  /** Se presente, renderizza un link; altrimenti un bottone che apre la modale contatti. */
+  href?: string;
+  variant?: 'primary' | 'ghost' | 'ghost-dark' | 'light' | 'whatsapp';
+  size?: 'sm' | 'lg';
+  /** Slug corso per precompilare la modale (judo, karate, …). */
+  course?: string;
+  location?: string;
+  class?: string;
+  ariaLabel?: string;
+  external?: boolean;
+}
+
+const {
+  label,
+  href,
+  variant = 'primary',
+  size,
+  course,
+  location,
+  class: className = '',
+  ariaLabel,
+  external = false,
+} = Astro.props;
+
+const cls = ['btn', variant !== 'primary' ? `btn--${variant}` : '', size ? `btn--${size}` : '', className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{href ? (
+  <a
+    href={href}
+    class={cls}
+    aria-label={ariaLabel}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+  >
+    {label}
+  </a>
+) : (
+  <button
+    type="button"
+    class={cls}
+    data-modal-open
+    data-course={course ?? ''}
+    data-location={location ?? ''}
+    aria-haspopup="dialog"
+  >
+    {label}
+  </button>
+)}

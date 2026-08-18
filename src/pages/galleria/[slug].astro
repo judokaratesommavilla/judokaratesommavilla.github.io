@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTAButton from '../../components/CTAButton.astro';
+import SiteImage from '../../components/SiteImage.astro';
+import { getCollection, render } from 'astro:content';
+import { buildBreadcrumbs } from '../../utils/seo';
+import { formatDateLong } from '../../utils/dates';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Galleria', path: '/galleria/' },
+    { name: post.data.title, path: `/galleria/${post.id}/` },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.publishDate.toISOString(),
+    ...(post.data.updatedDate
+      ? { dateModified: post.data.updatedDate.toISOString() }
+      : {}),
+    author: { '@type': 'Person', name: post.data.author },
+    inLanguage: 'it',
+  },
+];
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  image={post.data.image ? post.data.image.src : '/og/default.jpg'}
+  canonicalPath={`/galleria/${post.id}/`}
+  jsonLd={jsonLd}
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">{post.data.category}</span>
+      <h1 class="post-title mt-[0.8rem] text-[clamp(2rem,4.5vw,3.2rem)]">{post.data.title}</h1>
+      <p class="post-meta mt-[0.7rem] text-[0.95rem] text-text-muted">
+        {post.data.author} ·{' '}
+        <time datetime={post.data.publishDate.toISOString()}>
+          {formatDateLong(post.data.publishDate.toISOString().slice(0, 10))}
+        </time>
+      </p>
+      <p class="post-description reveal mt-[1.2rem] text-[1.15rem] font-semibold text-text">{post.data.description}</p>
+      {post.data.image && (
+        <SiteImage
+          src={post.data.image}
+          alt={post.data.imageAlt}
+          width={1600}
+          aspectRatio="16 / 9"
+          sizes="(min-width: 900px) 840px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="post-cover reveal mt-[1.6rem] aspect-[16/9] w-full rounded object-cover"
+        />
+      )}
+      <article
+        class="post-content reveal mt-8 border-t border-line pt-6 [&_h2]:mt-6 [&_h2]:mb-[0.6rem] [&_h3]:mt-6 [&_h3]:mb-[0.6rem] [&_p]:text-text-muted [&_a]:font-bold [&_a]:text-red [&_blockquote]:my-6 [&_blockquote]:border-l-[3px] [&_blockquote]:border-red [&_blockquote]:bg-paper-soft [&_blockquote]:px-[1.4rem] [&_blockquote]:py-4 [&_blockquote]:italic [&_blockquote]:text-text"
+      >
+        <Content />
+      </article>
+      <div class="post-actions mt-10 flex flex-wrap gap-[0.8rem]">
+        <CTAButton label="Torna alla galleria" href="/galleria/" variant="ghost" />
+        <CTAButton label="Scopri i corsi" href="/sport/" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

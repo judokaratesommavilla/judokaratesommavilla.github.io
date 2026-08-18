@@ -1,0 +1,36 @@
+---
+import CTAButton from './CTAButton.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import BackgroundOrnaments from './BackgroundOrnaments.astro';
+import { courseMap } from '../data/courses';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text: string;
+  primaryLabel: string;
+  /** Slug corso per precompilare la modale. */
+  course?: string;
+  /** Mostra anche il pulsante WhatsApp. */
+  showWhatsApp?: boolean;
+}
+
+const { eyebrow = 'Contattaci', title, text, primaryLabel, course, showWhatsApp = true } = Astro.props;
+const courseName = course ? courseMap[course as keyof typeof courseMap]?.name : undefined;
+---
+
+<section class="cta-section section--dark tatami relative z-[1] py-[var(--space-section)]">
+  <BackgroundOrnaments dark />
+  <div class="container relative z-[1] grid grid-cols-[1.6fr_1fr] items-center gap-14 max-[860px]:grid-cols-1">
+    <div class="cta-section__text reveal">
+      <span class="eyebrow eyebrow--light">{eyebrow}</span>
+      <h2 class="mt-[0.8rem]">{title}</h2>
+      <p class="mt-4 max-w-[48ch] text-[1.1rem] text-text-dark-muted">{text}</p>
+    </div>
+    <div class="reveal flex flex-wrap gap-[0.8rem] justify-start">
+      <CTAButton label={primaryLabel} course={course} size="lg" />
+      {showWhatsApp && <WhatsAppButton courseName={courseName} variant="ghost-dark" size="lg" />}
+    </div>
+  </div>
+</section>
+

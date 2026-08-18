@@ -1,0 +1,53 @@
+---
+import SiteImage from './SiteImage.astro';
+import BackgroundOrnaments from './BackgroundOrnaments.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  image: string;
+  imageAlt: string;
+  /** Mantenuto per compatibilità; l'altezza è sempre a schermo intero. */
+  compact?: boolean;
+}
+
+const { eyebrow, title, subtitle, image, imageAlt } = Astro.props;
+---
+
+<header
+  class:list={[
+    'page-hero relative z-[1] min-h-[100vh] min-h-dvh bg-ink-deep text-text-dark max-[900px]:flex max-[900px]:flex-col',
+  ]}
+>
+  <BackgroundOrnaments dark />
+  <div
+    class="page-hero__media absolute top-0 bottom-0 left-0 grid h-full w-1/2 place-items-stretch overflow-hidden before:absolute before:inset-0 before:z-[1] before:content-[''] before:bg-[rgba(13,15,18,0.42)] after:absolute after:inset-y-0 after:right-0 after:z-[1] after:pointer-events-none after:content-[''] after:w-[16%] after:bg-[linear-gradient(to_right,transparent,var(--color-ink-deep))] max-[900px]:relative max-[900px]:h-[42vh] max-[900px]:w-full"
+  >
+    <SiteImage
+      src={image}
+      alt={imageAlt}
+      loading="eager"
+      fetchpriority="high"
+      sizes="50vw"
+      class="absolute inset-0 h-full w-full object-cover object-center"
+    />
+  </div>
+  <div
+    class="page-hero__content relative z-[1] ml-[50vw] flex min-h-[100vh] min-h-dvh items-center p-[clamp(3rem,7vh,6rem)_var(--gutter)] max-[900px]:ml-0 max-[900px]:min-h-0 max-[900px]:flex-1 max-[900px]:justify-center max-[900px]:py-12"
+  >
+    <div class="page-hero__inner flex w-full max-w-[34rem] flex-col items-start max-[900px]:max-w-none">
+      {eyebrow && <span class="eyebrow text-red">{eyebrow}</span>}
+      <h1 class="mt-[0.8rem] max-w-[22ch] leading-[1.15]">{title}</h1>
+      {subtitle && (
+        <p class="page-hero__subtitle mt-4 max-w-[46ch] text-[clamp(1.1rem,2vw,1.35rem)] text-text-dark-muted">
+          {subtitle}
+        </p>
+      )}
+      <div class="page-hero__actions mt-[1.6rem] flex flex-wrap gap-[0.8rem]">
+        <slot />
+      </div>
+    </div>
+  </div>
+</header>
+

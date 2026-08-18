@@ -1,0 +1,24 @@
+---
+import type { Location } from '../data/types';
+import { mapsLink } from '../data/locations';
+
+interface Props {
+  location: Location;
+  label?: string;
+}
+
+const { location, label = `Mappa di ${location.name}` } = Astro.props;
+---
+
+<a
+  href={mapsLink(location)}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="inline-flex items-center gap-[0.5rem] font-display text-base font-bold tracking-[0.06em] text-red uppercase no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:text-red-dark"
+>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[1.1rem] w-[1.1rem]">
+    <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+  </svg>
+  {label}
+</a>
+

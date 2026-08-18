@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteImage from '../components/SiteImage.astro';
+import CTAButton from '../components/CTAButton.astro';
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import { getImageMetadata } from '../utils/images';
+import { buildBreadcrumbs } from '../utils/seo';
+import { formatDateShort } from '../utils/dates';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+);
+const postMap = new Map(posts.map((post) => [post.id, post]));
+
+type Tile =
+  | { type: 'photo'; src: string; alt: string; caption: string }
+  | { type: 'post'; id: string };
+
+/** Mosaico mischiato: foto di galleria e card articoli, in un ordine voluto. */
+const tiles: Tile[] = [
+  { type: 'photo', src: 'gallery/foto-saggio-fine-anno', alt: 'Atleti sul tatami alla fine del cambio cintura 2023', caption: 'Gli atleti sul tatami alla fine del cambio cintura 2023.' },
+  { type: 'photo', src: 'gallery/foto-antica-fiera-sommacampagna-2025', alt: 'Manifestazione della ASD Judo Karate Sommavilla all\'antica fiera di Sommacampagna 2025.', caption: 'Manifestazione della ASD Judo Karate Sommavilla all\'antica fiera di Sommacampagna 2025.' },
+  { type: 'post', id: 'saggio-fine-anno-2026' },
+  { type: 'photo', src: 'gallery/foto-saggio-fine-anno1', alt: 'Cambio cintura 2026 della ASD Judo Karate Sommavilla.', caption: 'Cambio cintura 2026 della ASD Judo Karate Sommavilla.' },
+  { type: 'photo', src: 'gallery/foto-saggio-fine-anno3', alt: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.', caption: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.' },
+  { type: 'photo', src: 'gallery/arena-doriano', alt: 'Il maestro Doriano Cordioli 7° DAN', caption: 'Articolo in ARENNA del riconoscimento del 7° dan al maestro Doriano Cordioli.' },
+  { type: 'post', id: 'doriano-cordioli-7-dan' },
+  { type: 'photo', src: 'gallery/foto-saggio-fine-anno4', alt: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.', caption: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.' },
+  { type: 'photo', src: 'gallery/foto-saggio-fine-anno5', alt: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.', caption: 'Cambio cintura 2025 della ASD Judo Karate Sommavilla.' },
+  { type: 'photo', src: 'gallery/maestri', alt: 'I maestri della società in palestra', caption: 'I maestri della società in palestra.' },
+  { type: 'post', id: 'asd-judo-e-karate-sommacampagna' },
+  { type: 'post', id: 'la-passione-del-judo-cresce-con-i-risultati-di-giovani-atleti' },
+  { type: 'photo', src: 'gallery/villafranca4', alt: 'La palestra di Villafranca di Verona', caption: 'La palestra di Villafranca di Verona.' },
+  { type: 'post', id: 'sommacampagna-e-villafranca-unite-nel-segno-del-judo' },
+];
+
+// Immagini a piena risoluzione per il modale: ogni foto della galleria viene
+// elaborata a build time anche in una versione grande (a volte oltre il viewport).
+const fullImages = new Map<string, string>();
+for (const tile of tiles.filter((t) => t.type === 'photo')) {
+  const meta = getImageMetadata(tile.src);
+  if (meta) {
+    const large = await getImage({ src: meta, width: 2000, format: 'webp', quality: 82 });
+    fullImages.set(tile.src, large.src);
+  }
+}
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Galleria', path: '/galleria/' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Galleria | ASD Judo Karate Sommavilla"
+  description="Le novità, gli eventi e le foto della vita sul tatami: saggio di fine anno, passaggio di cinture e i traguardi dei nostri atleti e tecnici."
+  image="/og/default.jpg"
+  canonicalPath="/galleria/"
+  jsonLd={jsonLd}
+>
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Galleria &amp; News</span>
+      <h1 class="news-title mt-[0.8rem] text-[clamp(2.4rem,5vw,3.8rem)]">Novità dal tatami</h1>
+      <p class="news-intro mt-[0.6rem] mb-10 max-w-[60ch] text-text-muted">
+        Foto, eventi e articoli che raccontano la vita della società: un mosaico di
+        immagini e storie dal nostro mondo, dal saggio di fine anno ai riconoscimenti dei nostri tecnici.
+      </p>
+
+      <div class="mosaic columns-1 [column-gap:1.4rem] sm:columns-2 lg:columns-3">
+        {tiles.map((tile) =>
+          tile.type === 'photo' ? (
+            <button
+              type="button"
+              data-image-open
+              data-reveal="pop"
+              data-src={fullImages.get(tile.src) ?? ''}
+              data-alt={tile.alt}
+              data-caption={tile.caption}
+              aria-haspopup="dialog"
+              aria-label={`Apri la foto: ${tile.alt}`}
+              class="group mb-[1.4rem] block w-full cursor-zoom-in overflow-hidden rounded border-0 bg-ink-soft p-0 text-left transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:shadow-soft focus-visible:outline-2 focus-visible:outline-red focus-visible:outline-offset-[3px] [break-inside:avoid]"
+            >
+              <SiteImage
+                src={tile.src}
+                alt={tile.alt}
+                loading="lazy"
+                sizes="(max-width: 620px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                class="block h-auto w-full transition-transform duration-[400ms] ease-[var(--ease)] group-hover:scale-[1.04]"
+              />
+            </button>
+          ) : postMap.get(tile.id) ? (
+            <article data-reveal="up" class="mb-[1.4rem] overflow-hidden rounded border border-line bg-white transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:shadow-soft [break-inside:avoid]">
+              <a href={`/galleria/${tile.id}/`} class="mosaic__post flex h-full flex-col no-underline">
+                {postMap.get(tile.id)!.data.image && (
+                  <SiteImage
+                    src={postMap.get(tile.id)!.data.image!}
+                    alt={postMap.get(tile.id)!.data.imageAlt}
+                    width={800}
+                    aspectRatio="16 / 9"
+                    sizes="(max-width: 620px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading="lazy"
+                    class="mosaic__post-cover aspect-[16/9] w-full object-cover"
+                  />
+                )}
+                <div class="mosaic__post-body flex flex-1 flex-col gap-[0.55rem] px-[1.5rem] py-[1.4rem] pb-[1.6rem]">
+                  <span class="mosaic__post-cat text-[0.8rem] font-bold tracking-[0.16em] text-red uppercase">{postMap.get(tile.id)!.data.category}</span>
+                  <h2 class="text-[1.3rem]">{postMap.get(tile.id)!.data.title}</h2>
+                  <p class="m-0 flex-1 text-[0.98rem] text-text-muted">{postMap.get(tile.id)!.data.description}</p>
+                  <time datetime={postMap.get(tile.id)!.data.publishDate.toISOString()} class="text-[0.85rem] text-text-faint">
+                    {formatDateShort(postMap.get(tile.id)!.data.publishDate.toISOString().slice(0, 10))}
+                  </time>
+                  <span class="mosaic__post-cta mt-[0.4rem] font-display font-semibold tracking-[0.06em] text-red uppercase">
+                    Leggi l'articolo <span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </a>
+            </article>
+          ) : null,
+        )}
+      </div>
+
+      <div class="news-actions mt-10 flex flex-wrap gap-[0.8rem]">
+        <CTAButton label="Vedi tutti gli articoli" href="/galleria/" />
+        <CTAButton label="Scopri i corsi" href="/sport/" variant="ghost" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

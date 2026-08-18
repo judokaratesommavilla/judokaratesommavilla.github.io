@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import InstructorCard from '../components/InstructorCard.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import CtaSection from '../components/CtaSection.astro';
+import CTAButton from '../components/CTAButton.astro';
+import SiteImage from '../components/SiteImage.astro';
+import { story } from '../data/story';
+import { instructors } from '../data/instructors';
+import { buildBreadcrumbs, buildInstructor } from '../utils/seo';
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Chi siamo', path: '/chi-siamo/' },
+  ]),
+  ...instructors.map((instructor) => buildInstructor(instructor)),
+];
+---
+
+<BaseLayout
+  title="Chi siamo | ASD Judo Karate Sommavilla"
+  description="Una società, una passione, un percorso: Judo, Karate, Difesa Personale e Psicomotricità a Villafranca di Verona e Sommacampagna. Scopri chi siamo e i nostri tecnici."
+  image="/og/default.jpg"
+  canonicalPath="/chi-siamo/"
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="Chi siamo"
+    title="Una società, una passione, un percorso."
+    subtitle="Judo, Karate, Difesa Personale e Psicomotricità: una realtà sportiva di Villafranca di Verona e Sommacampagna."
+    image="gallery/maestri"
+    imageAlt="I maestri della ASD Judo Karate Sommavilla in palestra"
+    compact
+  />
+
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="story-lead reveal text-[clamp(1.2rem,2.2vw,1.5rem)] font-semibold leading-[1.55] text-text">{story.intro}</p>
+      {story.paragraphs.map((paragraph) => <p class="story-text reveal text-[1.08rem] text-text-muted">{paragraph}</p>)}
+      <p class="story-note reveal mt-8 rounded-sm border border-dashed border-line px-[1.3rem] py-4 text-[0.95rem] text-text-muted">{story.note}</p>
+    </div>
+  </section>
+
+  <section class="section section--dark tatami">
+    <BackgroundOrnaments dark />
+    <div class="container">
+      <SectionHeading
+        eyebrow="La nostra storia"
+        title="Le tappe che ci hanno raccontato"
+        text="Dalla prima palestra di Sommacampagna al Palazzetto di Villafranca: i momenti che hanno costruito la nostra società."
+        light
+      />
+      <ol class="milestones m-0 grid max-w-[var(--container-narrow)] list-none gap-4 p-0">
+        {story.timeline.map((milestone) => (
+          <li
+            class="milestone reveal flex gap-[1.2rem] rounded-sm border border-line-dark bg-ink-soft px-[1.5rem] py-[1.3rem]"
+          >
+            <span class="milestone__year min-w-[5.5rem] flex-none font-display text-[2.2rem] font-bold leading-none text-red">{milestone.year}</span>
+            <div>
+              <h3 class="text-[1.3rem] text-text-dark">{milestone.title}</h3>
+              <p class="mt-[0.4rem] text-[0.98rem] text-text-dark-muted">{milestone.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Lo staff"
+        title="I tecnici della società"
+        text="Persone qualificate che accompagnano ogni atleta sul tatami e fuori."
+      />
+      <div class="instructors-grid grid grid-cols-2 gap-[1.2rem] sm:grid-cols-3 lg:grid-cols-4">
+        {instructors.map((instructor) => <InstructorCard instructor={instructor} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="container">
+      <div class="values-grid grid grid-cols-2 items-center gap-12 max-[860px]:grid-cols-1">
+        <div class="reveal">
+          <SiteImage
+            src="home/vision"
+            alt="Allenamento di judo della ASD Judo Karate Sommavilla"
+            width={1000}
+            aspectRatio="16 / 9"
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            class="h-auto w-full rounded"
+          />
+        </div>
+        <div class="values-body reveal flex flex-col items-start gap-6">
+          <SectionHeading
+            eyebrow="I nostri valori"
+            title="Forza, disciplina, rispetto"
+            text="Costruisci tecnica, disciplina e fiducia, un allenamento alla volta. Impara a controllare il movimento, il corpo e la situazione."
+          />
+          <CTAButton label="Vieni a conoscerci" size="lg" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <RelatedPosts match={['società', 'storia', 'judo', 'karate']} fallback title="Storie dalla società" eyebrow="Dal blog" />
+
+  <CtaSection
+    eyebrow="Contattaci"
+    title="Vieni a conoscerci di persona."
+    text="Siamo presenti in palestra durante gli orari dei corsi: trovi sempre un tecnico o un referente con cui parlare."
+    primaryLabel="Chiedi informazioni"
+  />
+</BaseLayout>
+

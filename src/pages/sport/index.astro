@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import BackgroundOrnaments from '../../components/BackgroundOrnaments.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import CourseCard from '../../components/CourseCard.astro';
+import RelatedPosts from '../../components/RelatedPosts.astro';
+import StartDates from '../../components/StartDates.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import CTAButton from '../../components/CTAButton.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { courses } from '../../data/courses';
+import { buildBreadcrumbs } from '../../utils/seo';
+
+const jsonLd = [
+  buildBreadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Sport', path: '/sport/' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Sport e percorsi | Judo, Karate, Difesa Personale e Psicomotricità"
+  description="Judo, Karate, Difesa Personale e Psicomotricità a Villafranca di Verona e Sommacampagna. Trova il percorso più adatto a te o a tuo figlio con ASD Judo Karate Sommavilla."
+  image="/og/default.jpg"
+  canonicalPath="/sport/"
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="Sport e percorsi"
+    title="Trova il tuo percorso"
+    subtitle="Judo, Karate, Difesa Personale e Psicomotricità: quattro percorsi pensati per ogni età, dalle 4 anni all'età adulta."
+    image="gallery/foto-saggio-fine-anno2"
+    imageAlt="Saggio di fine anno degli atleti ASD Judo Karate Sommavilla"
+    compact
+  >
+    <CTAButton label="Chiedi informazioni" size="lg" />
+    <WhatsAppButton courseName="Sport" variant="ghost-dark" size="lg" />
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="I percorsi"
+        title="Quattro modi di crescere sul tatami"
+        text="Ogni percorso ha la sua identità: scegli quello che assomiglia di più a te, o a chi vorresti avvicinare allo sport."
+      />
+      <div class="courses-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {courses.map((course) => <CourseCard course={course} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark tatami">
+    <BackgroundOrnaments dark />
+    <div class="container">
+      <div class="help-box reveal relative z-[1] grid grid-cols-[1fr_auto] items-center gap-8 max-[760px]:grid-cols-1">
+        <div>
+          <span class="eyebrow eyebrow--light">Non sai quale corso scegliere?</span>
+          <h2 class="mt-[0.6rem]">Ti aiutiamo noi</h2>
+          <p class="mt-[0.8rem] max-w-[60ch] text-text-dark-muted">
+            Raccontaci l'età, l'obiettivo e il tempo a disposizione: ti suggeriamo il percorso più adatto
+            e, se vuoi, vieni a conoscerci di persona prima di iniziare.
+          </p>
+        </div>
+        <CTAButton label="Parlane con noi" size="lg" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="container">
+      <StartDates title="Le prossime date di inizio" />
+    </div>
+  </section>
+
+  <RelatedPosts
+    match={['judo', 'karate', 'difesa personale', 'psicomotricità', 'sport']}
+    fallback
+    limit={3}
+    title="Approfondimenti dai nostri corsi"
+    eyebrow="Dalle news"
+  />
+
+  <CtaSection
+    eyebrow="Contattaci"
+    title="Prima di iniziare, vieni a conoscerci."
+    text="Ti aspettiamo sul tatami: rispondiamo a tutte le tue domande e ti aiutiamo a scegliere."
+    primaryLabel="Chiedi informazioni"
+  />
+</BaseLayout>
+

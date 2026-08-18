@@ -1,0 +1,94 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { getImageMetadata, INSTRUCTOR_PLACEHOLDER } from '../utils/images';
+
+interface Props {
+  /**
+   * Chiave immagine (`courses/judo-hero`, `instructors/doriano-cordioli`, …)
+   * risolta verso `src/assets/images/`, oppure un'immagine già risolta da una
+   * content collection (es. `post.data.image`).
+   */
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  aspectRatio?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  decoding?: 'async' | 'sync' | 'auto';
+  class?: string;
+  style?: string;
+}
+
+const {
+  src,
+  alt,
+  width = 1600,
+  height,
+  aspectRatio,
+  sizes = '100vw',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  decoding = 'async',
+  class: className = '',
+  style,
+} = Astro.props;
+
+// Le chiavi stringa vengono risolte a build time verso `src/assets/images/`;
+// passando già un `ImageMetadata` (content collection) viene usato direttamente.
+const meta = typeof src === 'string' ? getImageMetadata(src) : src;
+
+// Placeholder SVG per i tecnici senza foto disponibile.
+const placeholder =
+  typeof src === 'string'
+    ? !src || src.startsWith('placeholders')
+      ? INSTRUCTOR_PLACEHOLDER
+      : src
+    : '';
+
+function parseRatio(ratio: string | undefined): number | undefined {
+  if (!ratio) return undefined;
+  const [a, b] = ratio.split('/').map((value) => parseFloat(value.trim()));
+  return a && b ? a / b : undefined;
+}
+
+const parsedRatio = parseRatio(aspectRatio);
+const resolvedHeight = height ?? (width && parsedRatio ? Math.round(width / parsedRatio) : undefined);
+---
+
+{meta ? (
+  // Formati next-gen generati a build time con il componente nativo <Picture>:
+  // AVIF come prima scelta, WebP come fallback e il formato originale come
+  // ultima risorsa (evita la conversione in PNG delle sorgenti WebP).
+  // `widths` genera anche la variante retina 1x/2x nel srcset.
+  <Picture
+    src={meta}
+    formats={['avif', 'webp']}
+    fallbackFormat={meta.format}
+    width={width}
+    height={resolvedHeight}
+    fit="cover"
+    widths={[width, width * 2]}
+    sizes={sizes}
+    alt={alt}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={decoding}
+    class={className}
+    style={style}
+  />
+) : (
+  <img
+    src={placeholder}
+    alt={alt}
+    width={640}
+    height={640}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={decoding}
+    class={className}
+    style={style}
+  />
+)}

@@ -1,0 +1,72 @@
+---
+import type { Location } from '../data/types';
+import { courseMap } from '../data/courses';
+import { mapsLink, directionsLink } from '../data/locations';
+import SiteImage from './SiteImage.astro';
+
+interface Props {
+  location: Location;
+}
+
+const { location } = Astro.props;
+const courses = location.courseSlugs.map((slug) => courseMap[slug]);
+---
+
+<article class="reveal flex h-full flex-col overflow-hidden rounded border border-line bg-white transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:shadow-soft">
+  <div class="relative overflow-hidden">
+    <SiteImage
+      src={location.image}
+      alt={location.imageAlt}
+      width={1200}
+      aspectRatio={location.imageAspectRatio}
+      sizes="(min-width: 1024px) 50vw, (min-width: 640px) 33vw, 100vw"
+      class="aspect-[16/10] w-full object-cover"
+    />
+    <span class="absolute bottom-4 left-4 rounded-sm bg-red px-[0.8rem] py-[0.35rem] font-display text-base font-bold tracking-[0.08em] text-white uppercase">
+      {location.name}
+    </span>
+  </div>
+  <div class="flex flex-1 flex-col gap-[0.9rem] p-[1.9rem]">
+    <h3>{location.facility}</h3>
+    <p class="m-0 text-[0.98rem] text-text-muted">
+      {location.address} · {location.zip} {location.city} ({location.province})
+    </p>
+    <!-- mt-auto allinea il blocco corsi (e le azioni) in fondo a entrambe le card -->
+    <div class="mt-auto border-t border-line pt-[0.9rem]">
+      <span class="text-[0.8rem] font-bold tracking-[0.16em] text-text-muted uppercase">
+        Corsi in questa sede
+      </span>
+      <ul class="mt-[0.6rem] flex flex-wrap gap-[0.5rem] p-0 m-0 list-none">
+        {courses.map((course) => (
+          <li>
+            <a
+              href={`/sport/${course.slug}/`}
+              class="inline-block rounded-full border border-line px-[0.7rem] py-[0.3rem] font-display text-[0.95rem] font-semibold tracking-[0.04em] text-text uppercase no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:border-ink hover:bg-ink hover:text-white"
+            >
+              {course.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="flex flex-wrap gap-[0.6rem]">
+      <a
+        class="btn btn--sm"
+        href={mapsLink(location)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Vedi sulla mappa
+      </a>
+      <a
+        class="btn btn--ghost btn--sm"
+        href={directionsLink(location)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Come arrivare
+      </a>
+    </div>
+  </div>
+</article>
+

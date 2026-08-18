@@ -1,0 +1,41 @@
+---
+import { mailtoLink } from '../utils/phone';
+
+interface Props {
+  to: string;
+  display?: string;
+  label?: string;
+  variant?: 'primary' | 'ghost' | 'ghost-dark' | 'light';
+  size?: 'sm' | 'lg';
+  class?: string;
+  iconOnly?: boolean;
+  subject?: string;
+  body?: string;
+}
+
+const {
+  to,
+  display,
+  label,
+  variant = 'ghost',
+  size,
+  class: className = '',
+  iconOnly = false,
+  subject,
+  body,
+} = Astro.props;
+
+const text = label ?? display ?? to;
+const cls = ['btn', `btn--${variant}`, size ? `btn--${size}` : '', className].filter(Boolean).join(' ');
+---
+
+<a
+  href={mailtoLink(to, { subject, body })}
+  class={cls}
+  aria-label={iconOnly ? `Scrivi a ${to}` : undefined}
+>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+  </svg>
+  {iconOnly ? '' : <span>{text}</span>}
+</a>

@@ -1,0 +1,89 @@
+---
+/**
+ * Mostra gli articoli del blog pertinenti (per categoria o tag).
+ * Da usare nelle sezioni delle pagine esistenti in base ai tag.
+ */
+import { getCollection } from 'astro:content';
+import { formatDateShort } from '../utils/dates';
+import SiteImage from './SiteImage.astro';
+
+interface Props {
+  /** Tag o categorie da abbinare (case-insensitive). */
+  match: string[];
+  /** Numero massimo di articoli. */
+  limit?: number;
+  /** Slug da escludere (es. l'articolo corrente). */
+  exclude?: string;
+  /** Sever fallback: se non ci sono corrispondenze mostriamo comunque i più recenti. */
+  fallback?: boolean;
+  title?: string;
+  eyebrow?: string;
+}
+
+const { match, limit = 3, exclude, fallback = false, title = 'Dal nostro blog', eyebrow = 'Approfondimenti' } = Astro.props;
+
+const norm = (s: string) => s.toLowerCase().trim();
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .map((post) => ({
+    ...post,
+    tags: (post.data.tags as string[]).map(norm),
+    category: norm(post.data.category),
+  }))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const filtered = posts.filter(
+  (post) =>
+    !(exclude && post.id === exclude) &&
+    (match.some((m) => post.tags.includes(norm(m)) || post.category === norm(m))),
+);
+
+const selected = (filtered.length ? filtered : fallback ? posts : [])
+  .filter((post) => !(exclude && post.id === exclude))
+  .slice(0, limit);
+---
+
+{selected.length > 0 && (
+  <section class="blog-related py-[var(--space-section)]">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+      </div>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {selected.map((post) => (
+          <article
+            class="reveal overflow-hidden rounded border border-line bg-white transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:shadow-soft"
+          >
+            <a href={`/galleria/${post.id}/`} class="flex h-full flex-col no-underline">
+              {post.data.image && (
+                <SiteImage
+                  src={post.data.image}
+                  alt={post.data.imageAlt}
+                  width={800}
+                  aspectRatio="16 / 9"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  loading="lazy"
+                  class="aspect-[16/9] w-full object-cover"
+                />
+              )}
+              <div class="flex flex-1 flex-col gap-[0.5rem] px-[1.5rem] py-[1.4rem] pb-[1.6rem]">
+                <span class="text-[0.8rem] font-bold tracking-[0.16em] text-red uppercase">{post.data.category}</span>
+                <h3 class="text-[1.35rem]">{post.data.title}</h3>
+                <p class="m-0 flex-1 text-[0.98rem] text-text-muted">{post.data.description}</p>
+                <time datetime={post.data.publishDate.toISOString()} class="text-[0.85rem] text-text-faint">
+                  {formatDateShort(post.data.publishDate.toISOString().slice(0, 10))}
+                </time>
+                <span class="mt-[0.4rem] font-display text-base font-semibold tracking-[0.06em] text-red uppercase">
+                  Leggi l'articolo
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+

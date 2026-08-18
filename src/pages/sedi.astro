@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import LocationCard from '../components/LocationCard.astro';
+import CtaSection from '../components/CtaSection.astro';
+import { locations, mapsLink, directionsLink } from '../data/locations';
+import { contacts } from '../data/contacts';
+import { buildSportsActivityLocation } from '../utils/seo';
+
+const jsonLd = locations.map((location) => buildSportsActivityLocation(location));
+---
+
+<BaseLayout
+  title="Le sedi | ASD Judo Karate Sommavilla"
+  description="Le sedi di ASD Judo Karate Sommavilla: Palazzetto dello Sport di Villafranca di Verona e Scuola Secondaria Dante Alighieri di Sommacampagna. Orari, corsi e come arrivare."
+  image="/og/default.jpg"
+  canonicalPath="/sedi/"
+  jsonLd={jsonLd}
+>
+  <PageHero
+    eyebrow="Le sedi"
+    title="Due sedi, una sola passione"
+    subtitle="Villafranca di Verona e Sommacampagna: due strutture, gli stessi valori."
+    image="locations/location-hero"
+    imageAlt="La palestra di Villafranca di Verona della ASD Judo Karate Sommavilla"
+    compact
+  />
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Dove ci trovi"
+        title="Le nostre sedi operative"
+        text="Ogni sede ospita corsi specifici: ecco indirizzi, corsi disponibili e indicazioni per raggiungerci."
+      />
+      <div class="locations-grid grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {locations.map((location) => <LocationCard location={location} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark tatami">
+    <BackgroundOrnaments dark />
+    <div class="container">
+      <SectionHeading eyebrow="Come arrivare" title="Indicazioni stradali" light />
+      <div class="directions-grid grid grid-cols-1 gap-8 sm:grid-cols-2">
+        {locations.map((location) => (
+          <div
+            class="direction reveal relative flex min-h-[16rem] flex-col items-start justify-center gap-[0.9rem] rounded border border-line-dark bg-ink-soft p-10"
+          >
+            <span class="h-[0.7rem] w-[0.7rem] bg-red" aria-hidden="true"></span>
+            <h3>{location.name}</h3>
+            <p class="m-0 text-[0.98rem] text-text-dark-muted">{location.facility} — {location.address}, {location.zip} {location.city}</p>
+            <a href={directionsLink(location)} target="_blank" rel="noopener noreferrer" class="btn btn--ghost-dark btn--sm">
+              Come arrivare
+            </a>
+            <a href={mapsLink(location)} target="_blank" rel="noopener noreferrer" class="link-arrow link-arrow--dark mt-2">
+              Apri su Google Maps
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        ))}
+      </div>
+      <p class="presence-note reveal mt-8 max-w-[var(--container-narrow)] rounded-sm border border-dashed border-line-dark px-[1.4rem] py-[1.1rem] text-[1.02rem] text-text-dark-muted">{contacts.presenceNote}</p>
+    </div>
+  </section>
+
+  <CtaSection
+    eyebrow="Contattaci"
+    title="Ti aspettiamo in palestra."
+    text="Se hai dubbi su quale sede frequentare o su quale corso iniziare, scrivici: ti aiutiamo noi."
+    primaryLabel="Chiedi informazioni"
+  />
+</BaseLayout>
+

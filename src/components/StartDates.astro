@@ -1,0 +1,65 @@
+---
+import { courses } from '../data/courses';
+import { locationMap } from '../data/locations';
+import { formatDayMonth, formatDateShort } from '../utils/dates';
+
+interface Props {
+  /** Course slugs da mostrare; di default tutti quelli con una data di inizio. */
+  courseSlugs?: string[];
+  title?: string;
+  intro?: string;
+}
+
+const { courseSlugs, title = 'I corsi stanno per iniziare', intro } = Astro.props;
+
+const items = courses
+  .filter((course) => (courseSlugs ? courseSlugs.includes(course.slug) : true))
+  .flatMap((course) =>
+    course.startDates.map((start) => ({
+      courseName: course.name,
+      location: locationMap[start.location],
+      label: start.label,
+      date: start.date,
+    })),
+  )
+  .sort((a, b) => a.date.localeCompare(b.date));
+---
+
+<section class="start-dates">
+  <div class="section-head section-head--center reveal">
+    <span class="eyebrow">Date di inizio</span>
+    <h2>{title}</h2>
+    {intro && <p>{intro}</p>}
+  </div>
+  {items.length > 0 ? (
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => (
+        <article
+          class="reveal flex flex-col gap-[1.2rem] rounded border border-line border-t-[3px] border-t-red bg-white p-[1.8rem] transition-all duration-[280ms] ease-[var(--ease)] hover:-translate-y-1 hover:shadow-soft"
+        >
+          <div class="flex flex-col leading-none">
+            <span class="font-display text-[3.2rem] font-bold tracking-[0.02em] text-red">
+              {formatDayMonth(item.date).split(' ')[0]}
+            </span>
+            <span class="mt-[0.35rem] font-display text-base font-semibold tracking-[0.14em] text-text-muted uppercase">
+              {formatDayMonth(item.date).split(' ').slice(1).join(' ')}
+            </span>
+          </div>
+          <div class="flex flex-col gap-[0.3rem] border-t border-line pt-[1.2rem]">
+            <span class="text-[0.82rem] font-bold tracking-[0.18em] text-red uppercase">{item.courseName}</span>
+            <h3 class="text-[1.4rem]">{item.label}</h3>
+            <span class="text-[0.98rem] text-text-muted">{item.location.name}</span>
+            <time class="mt-[0.2rem] text-[0.9rem] font-semibold text-text-faint" datetime={item.date}>
+              {formatDateShort(item.date)}
+            </time>
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p class="m-0 rounded border border-dashed border-line p-8 text-center text-text-muted">
+      Le prossime date di inizio saranno comunicate qui a breve.
+    </p>
+  )}
+</section>
+

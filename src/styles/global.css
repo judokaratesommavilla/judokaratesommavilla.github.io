@@ -1,0 +1,893 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Design tokens — ASD Judo Karate Sommavilla
+   Palette: carbone / off-white / rosso sportivo profondo
+   Ogni token genera utility Tailwind (es. `bg-ink`, `text-red`)
+   e resta disponibile come variabile CSS (`var(--color-ink)`).
+   ============================================================ */
+
+@theme {
+  /* Colori base */
+  --color-ink: #14161a;
+  --color-ink-soft: #1d2026;
+  --color-ink-deep: #0d0f12;
+  --color-paper: #f6f4ef;
+  --color-paper-soft: #efece4;
+  --color-white: #ffffff;
+
+  /* Accento principale (CTA, active, indicatori) */
+  --color-red: #c8102e;
+  --color-red-dark: #a30d25;
+  --color-red-soft: rgba(200, 16, 46, 0.08);
+  --color-red-line: rgba(200, 16, 46, 0.35);
+
+  /* Testo */
+  --color-text: #1d2026;
+  --color-text-muted: #4d535e;
+  --color-text-faint: #6f7681;
+  --color-text-dark: #f6f4ef;
+  --color-text-dark-muted: #c4cdd6;
+
+  /* Linee */
+  --color-line: rgba(33, 36, 42, 0.16);
+  --color-line-dark: rgba(244, 242, 236, 0.18);
+
+  /* Tipografia */
+  --font-display: 'Oswald', 'Saira Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-body: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --container: 1180px;
+  --container-narrow: 840px;
+  --container-wide: 1400px;
+  --gutter: clamp(1.5rem, 5vw, 3rem);
+  --space-section: clamp(5.5rem, 11vw, 9.5rem);
+  --space-section-sm: clamp(4rem, 7vw, 5.5rem);
+
+  /* Sezioni di apertura (hero) */
+  --hero-h: 100vh;
+  --hero-h-dvh: 100dvh;
+
+  /* Forme */
+  --radius-sm: 3px;
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  /* Elevazioni e transizioni */
+  --shadow-soft: 0 24px 60px -32px rgba(13, 15, 18, 0.4);
+  --shadow-card: 0 2px 0 0 rgba(13, 15, 18, 0.08);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition: 0.28s var(--ease);
+
+  /* Easing sportivi: entrate rapide con decelerazione improvvisa (Judo/Karate) */
+  --ease-sport: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Easing standard (equivalente a `ease-out` di Tailwind) e respiro lento
+     per elementi decorativi: genera l'utility `animate-pulse-slow`. */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+
+  @keyframes pulse-slow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  /* Navbar */
+  --nav-height: 72px;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-text);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    /* Line-height generoso: i titoli maiuscoli con accenti ("È") non
+       devono collidere con la riga superiore. */
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(2.75rem, 7.5vw, 5.75rem); }
+  h2 { font-size: clamp(2rem, 4.8vw, 3.5rem); }
+  h3 { font-size: clamp(1.4rem, 2.6vw, 1.85rem); }
+  h4 { font-size: 1.25rem; }
+  h5 { font-size: 1.05rem; }
+
+  p { margin: 0 0 1rem; }
+
+  :focus-visible {
+    outline: 3px solid var(--color-red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-red);
+    color: var(--color-white);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ============================================================
+   Componenti riusabili (stile standardizzato, token Tailwind)
+   ============================================================ */
+
+@layer components {
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .container--narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .container--wide {
+    max-width: var(--container-wide);
+  }
+
+  .section {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-section);
+  }
+
+  .section--sm {
+    padding-block: var(--space-section-sm);
+  }
+
+  .section--dark {
+    background: var(--color-ink);
+    color: var(--color-text-dark);
+  }
+
+  .section--ink-soft {
+    background: var(--color-ink-soft);
+    color: var(--color-text-dark);
+  }
+
+  /* Griglia "tatami" discreta per sezioni scure */
+  .tatami {
+    position: relative;
+  }
+
+  .tatami::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+  }
+
+  /* Etichetta sezione: caps + breve linea divisoria */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-red);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 1.7rem;
+    height: 2px;
+    background: currentColor;
+    flex: none;
+    opacity: 0.85;
+    border-radius: 2px;
+  }
+
+  /* Intestazione sezione */
+  .section-head {
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+    max-width: 44rem;
+  }
+
+  .section-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .section-head h2 {
+    margin-top: 0.9rem;
+  }
+
+  .section-head p {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  .section--dark .section-head p {
+    color: var(--color-text-dark-muted);
+  }
+
+  /* Bottoni */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.6rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-white);
+    background: var(--color-red);
+    border: 1px solid var(--color-red);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      background var(--transition),
+      color var(--transition),
+      border-color var(--transition),
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .btn:hover {
+    background: var(--color-red-dark);
+    border-color: var(--color-red-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn svg {
+    width: 1.05em;
+    height: 1.05em;
+    flex: none;
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--color-line);
+  }
+
+  .btn--ghost:hover {
+    background: var(--color-ink);
+    color: var(--color-white);
+    border-color: var(--color-ink);
+  }
+
+  .btn--ghost-dark {
+    background: transparent;
+    color: var(--color-text-dark);
+    border-color: var(--color-line-dark);
+  }
+
+  .btn--ghost-dark:hover {
+    background: var(--color-white);
+    color: var(--color-ink);
+    border-color: var(--color-white);
+  }
+
+  .btn--light {
+    background: var(--color-white);
+    color: var(--color-ink);
+    border-color: var(--color-white);
+  }
+
+  .btn--light:hover {
+    background: var(--color-paper);
+    border-color: var(--color-paper);
+    color: var(--color-red-dark);
+  }
+
+@layer components {
+  /* Link con freccia */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-red);
+  }
+
+  .link-arrow .arrow {
+    display: inline-flex;
+    transition: transform var(--transition);
+  }
+
+  .link-arrow:hover .arrow {
+    transform: translateX(5px);
+  }
+
+  .link-arrow--dark {
+    color: var(--color-text-dark);
+  }
+
+  /* Utility a11y e di base */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: -100px;
+    left: 1rem;
+    z-index: 1000;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-ink);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: top var(--transition);
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .text-red {
+    color: var(--color-red);
+  }
+
+  .hairline {
+    border: 0;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .section--dark .hairline {
+    background: var(--color-line-dark);
+  }
+
+  /* Reveal on-scroll — sportivo (IntersectionObserver + classi).
+     Gating `html:not(.no-js)`: `no-js` è impostato server-side e rimosso dal
+     JS; senza JavaScript i contenuti restano sempre visibili.
+
+     Si usa `animation` (non `transition`): così la durata del reveal non
+     viene sovrascritta dalle utility Tailwind `transition-all duration-*`
+     presenti su molti componenti, e le transition di hover dei componenti
+     (translate/box-shadow) continuano a funzionare dopo l'entrata. */
+  html:not(.no-js) [data-reveal],
+  html:not(.no-js) .reveal {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+
+  /* Stato di partenza per ogni variante. */
+  html:not(.no-js) .reveal,
+  html:not(.no-js) [data-reveal='up'] {
+    transform: translate3d(0, 1.6rem, 0) scale(0.97);
+  }
+
+  html:not(.no-js) [data-reveal='left'] {
+    transform: translate3d(-2.6rem, 0, 0) scale(0.99);
+  }
+
+  html:not(.no-js) [data-reveal='right'] {
+    transform: translate3d(2.6rem, 0, 0) scale(0.99);
+  }
+
+  html:not(.no-js) [data-reveal='zoom'] {
+    transform: scale(0.9);
+  }
+
+  html:not(.no-js) [data-reveal='pop'] {
+    transform: scale(0.5) translate3d(0, 0.6rem, 0);
+  }
+
+  /* Entrate rallentate: 0.9s di default, `--reveal-delay` per lo stagger.
+     `backwards` applica lo stato iniziale durante il delay ma non mantiene
+     l'override a fine animazione (così l'hover torna a funzionare). */
+  html:not(.no-js) [data-reveal].is-revealed,
+  html:not(.no-js) .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    animation: reveal-up var(--reveal-dur, 1.2s) var(--ease-out) var(--reveal-delay, 0s) backwards;
+  }
+
+  html:not(.no-js) [data-reveal='left'].is-revealed {
+    animation-name: reveal-left;
+  }
+
+  html:not(.no-js) [data-reveal='right'].is-revealed {
+    animation-name: reveal-right;
+  }
+
+  html:not(.no-js) [data-reveal='zoom'].is-revealed {
+    animation-name: reveal-zoom;
+    animation-duration: var(--reveal-dur, 0.7s);
+  }
+
+  html:not(.no-js) [data-reveal='pop'].is-revealed {
+    animation-name: reveal-pop;
+    animation-duration: var(--reveal-dur, 0.7s);
+    animation-timing-function: var(--ease-pop);
+  }
+
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translate3d(0, 1.6rem, 0) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes reveal-left {
+    from { opacity: 0; transform: translate3d(-2.6rem, 0, 0) scale(0.99); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes reveal-right {
+    from { opacity: 0; transform: translate3d(2.6rem, 0, 0) scale(0.99); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes reveal-zoom {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes reveal-pop {
+    from { opacity: 0; transform: scale(0.5) translate3d(0, 0.6rem, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:not(.no-js) [data-reveal],
+    html:not(.no-js) .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+/* ============================================================
+   Form
+   ============================================================ */
+
+@layer components {
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-field label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--color-red);
+    box-shadow: 0 0 0 3px var(--color-red-soft);
+  }
+
+  .form-field .field-error {
+    color: var(--color-red-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .form-field input[aria-invalid='true'],
+  .form-field select[aria-invalid='true'],
+  .form-field textarea[aria-invalid='true'] {
+    border-color: var(--color-red);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+
+  .form-grid .form-field--full {
+    grid-column: 1 / -1;
+  }
+
+  .form-check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .form-check input {
+    margin-top: 0.25rem;
+    accent-color: var(--color-red);
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
+  }
+
+  .form-check a {
+    color: var(--color-red);
+  }
+
+  @media (max-width: 640px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* ============================================================
+   Transizioni di pagina (Astro View Transitions)
+   ============================================================ */
+
+::view-transition-old(root) {
+  animation: vt-fade-out 0.22s var(--ease) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 0.34s var(--ease) both;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+
+  .btn--whatsapp {
+    background: #25d366;
+    border-color: #25d366;
+    color: #06250f;
+  }
+
+  .btn--whatsapp:hover {
+    background: #1ebd59;
+    border-color: #1ebd59;
+    color: #06250f;
+  }
+
+  .btn--sm {
+    padding: 0.55rem 1.05rem;
+    font-size: 0.9rem;
+  }
+
+  .btn--lg {
+    padding: 1.05rem 2rem;
+    font-size: 1.15rem;
+  }
+}
+
+
+/* ============================================================
+   Scrollbar sottile (usata nei contenitori scrollabili dei modali)
+   ============================================================ */
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb, rgba(33, 36, 42, 0.35)) transparent;
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb, rgba(33, 36, 42, 0.35));
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover, rgba(33, 36, 42, 0.55));
+  background-clip: padding-box;
+}
+
+/* ============================================================
+   Transizioni dei modali Vue (classi generate da <Transition>)
+   ============================================================ */
+
+/* Foto */
+.modal-img-enter-active,
+.modal-img-leave-active {
+  transition: opacity 0.25s var(--ease);
+}
+
+.modal-img-enter-active .img-panel,
+.modal-img-leave-active .img-panel {
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+.modal-img-enter-from,
+.modal-img-leave-to {
+  opacity: 0;
+}
+
+.modal-img-enter-from .img-panel,
+.modal-img-leave-to .img-panel {
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+}
+
+/* Contatti */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.25s var(--ease);
+}
+
+.modal-enter-active .modal-panel,
+.modal-leave-active .modal-panel {
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-panel,
+.modal-leave-to .modal-panel {
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+}
+
+/* Menu mobile */
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.25s var(--ease);
+}
+
+.menu-enter-active .mobile-menu__panel,
+.menu-leave-active .mobile-menu__panel {
+  transition: transform 0.3s var(--ease);
+}
+
+.menu-enter-from,
+.menu-leave-to {
+  opacity: 0;
+}
+
+.menu-enter-from .mobile-menu__panel,
+.menu-leave-to .mobile-menu__panel {
+  transform: translateX(100%);
+}
+
+/* Cookie banner */
+.cookie-enter-active,
+.cookie-leave-active {
+  transition: transform 0.35s var(--ease), opacity 0.35s var(--ease);
+}
+
+.cookie-enter-from,
+.cookie-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+
+
+/* ============================================================
+   Sfondo animato — forme fluttuanti (GSAP)
+   ------------------------------------------------------------
+   Ogni forma è composta da tre livelli annidati, un canale
+   `transform` per livello, così fluttuazione, parallasse e hover
+   coesistono senza conflitti:
+   - `.bg-el`        → hover: scale (timeline GSAP su mouseenter)
+   - `.bg-el__float` → fluttuazione continua: x / y / rotation (GSAP)
+   - `.bg-el__mouse` → parallasse dal mouse: x / y (GSAP quickTo)
+
+   Le forme sono puramente decorative (aria-hidden) e trasparenti ai
+   pointer-events: l'hover è gestito via JS con un hit-test screen-space
+   (vedi BackgroundOrnaments.astro).
+   ============================================================ */
+
+.bg-el {
+  position: absolute;
+  /* L'hover è calcolato via JS in screen-space: le forme restano trasparenti
+     ai pointer-events così non intercettano click/scroll sul contenuto. */
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bg-el__float {
+  display: block;
+  will-change: transform;
+}
+
+.bg-el__mouse {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  will-change: transform;
+  transition: filter 0.5s var(--ease-out);
+}
+
+/* Hover: `.is-hovered` è aggiunta da GSAP su mouseenter/mouseleave.
+   Scala e "respiro" sono animati dalla timeline GSAP sul `.bg-el`;
+   qui si gestisce solo l'illuminazione della forma. */
+.bg-el.is-hovered .bg-el__mouse {
+  filter: brightness(1.35);
+}
+
+/* --- Forme geometriche (pure CSS) --- */
+
+.shape-ring {
+  border: 1.5px solid currentColor;
+  border-radius: 9999px;
+}
+
+.shape-ring::after {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  border: 1px solid currentColor;
+  border-radius: 9999px;
+  opacity: 0.75;
+}
+
+.shape-dot {
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+.shape-cross {
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 16%, 16% 100%;
+  border-radius: 3px;
+}
+
+.shape-arc {
+  border: 2px solid currentColor;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  border-radius: 100% 0 0 0;
+}
+
+.shape-triangle {
+  background: currentColor;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.shape-diamond {
+  background: currentColor;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.shape-stroke {
+  aspect-ratio: auto;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, currentColor 25%, currentColor 75%, transparent);
+}
+
+/* --- Icone SVG (shape-icon): riempiono il riquadro e colorano via currentColor --- */
+
+.shape-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-el,
+  .bg-el__float,
+  .bg-el__mouse {
+    transition: none !important;
+  }
+}
+

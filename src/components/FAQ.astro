@@ -1,0 +1,37 @@
+---
+import type { Faq } from '../data/types';
+
+interface Props {
+  faqs: Faq[];
+  title?: string;
+  intro?: string;
+  id?: string;
+}
+
+const { faqs, title = 'Domande frequenti', intro, id = 'faq' } = Astro.props;
+---
+
+<section class="faq" id={id}>
+  <div class="section-head">
+    <span class="eyebrow">FAQ</span>
+    <h2>{title}</h2>
+    {intro && <p>{intro}</p>}
+  </div>
+  <div class="grid max-w-[var(--container-narrow)] gap-[0.6rem]">
+    {faqs.map((faq) => (
+      <details
+        class="group reveal overflow-hidden rounded-sm border border-line bg-white [.section--dark_&]:border-line-dark [.section--dark_&]:bg-ink-soft"
+      >
+        <summary
+          class="flex cursor-pointer list-none items-center gap-[0.9rem] px-[1.3rem] py-4 font-display text-[1.15rem] font-semibold tracking-[0.03em] text-text uppercase transition-colors duration-[280ms] ease-[var(--ease)] [&::-webkit-details-marker]:hidden before:h-[0.55rem] before:w-[0.55rem] before:flex-none before:bg-red before:content-[''] after:ml-auto after:font-body after:text-[1.3rem] after:font-semibold after:text-red after:content-['+'] after:transition-transform duration-[280ms] ease-[var(--ease)] group-open:text-red-dark group-open:after:rotate-45"
+        >
+          {faq.question}
+        </summary>
+        <p class="m-0 px-[1.3rem] pb-[1.2rem] pl-[2.75rem] text-[0.98rem] text-text-muted [.section--dark_&]:text-text-dark-muted">
+          {faq.answer}
+        </p>
+      </details>
+    ))}
+  </div>
+</section>
+

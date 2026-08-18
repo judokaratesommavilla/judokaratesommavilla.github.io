@@ -1,0 +1,138 @@
+---
+import { site } from '../data/site';
+import { mainNavigation } from '../data/navigation';
+import { courses } from '../data/courses';
+import { locations } from '../data/locations';
+import { contacts } from '../data/contacts';
+import { telLink, mailtoLink } from '../utils/phone';
+import SocialLinks from './SocialLinks.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t-4 border-red bg-ink-deep text-text-dark-muted">
+  <div class="container">
+    <div class="grid grid-cols-[2fr_1fr_1fr_1.3fr_2.2fr] gap-10 py-14 max-[1024px]:grid-cols-2 max-[620px]:grid-cols-1 max-[620px]:gap-7">
+      <div class="site-footer__brand">
+        <a href="/" class="inline-flex items-center gap-[0.7rem] no-underline" aria-label="ASD Judo Karate Sommavilla — home">
+          <img src="/logo_white.svg" alt="" width="40" height="45" loading="lazy" decoding="async" class="h-[2.7rem] w-[2.4rem] object-contain" />
+          <span class="flex flex-col leading-[1.05] text-white">
+            <strong class="font-display text-[1.15rem] font-bold tracking-[0.04em] uppercase">
+              Judo Karate
+            </strong>
+            <em class="font-display text-[0.82rem] font-semibold tracking-[0.28em] text-red uppercase not-italic">
+              Sommavilla
+            </em>
+          </span>
+        </a>
+        <p class="mt-4 mb-5 max-w-[30ch] text-[0.95rem]">{site.footerDescription}</p>
+        <SocialLinks />
+      </div>
+
+      <nav class="site-footer__col" aria-label="Navigazione">
+        <h4 class="mb-4 text-base text-white">Navigazione</h4>
+        <ul class="m-0 grid list-none gap-[0.45rem] p-0">
+          {mainNavigation.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-[0.95rem] text-text-dark-muted underline decoration-[rgba(196,205,214,0.35)] decoration-1 underline-offset-4 transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white hover:decoration-red"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Sport">
+        <h4 class="mb-4 text-base text-white">Sport</h4>
+        <ul class="m-0 grid list-none gap-[0.45rem] p-0">
+          {courses.map((course) => (
+            <li>
+              <a
+                href={`/sport/${course.slug}/`}
+                class="text-[0.95rem] text-text-dark-muted underline decoration-[rgba(196,205,214,0.35)] decoration-1 underline-offset-4 transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white hover:decoration-red"
+              >
+                {course.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h4 class="mb-4 text-base text-white">Sedi</h4>
+        <ul class="m-0 grid list-none gap-[0.45rem] p-0">
+          {locations.map((location) => (
+            <li>
+              <a
+                href="/sedi/"
+                class="text-[0.95rem] text-text-dark-muted underline decoration-[rgba(196,205,214,0.35)] decoration-1 underline-offset-4 transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white hover:decoration-red"
+              >
+                {location.facility}, {location.address} — {location.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="site-footer__col">
+        <h4 class="mb-4 text-base text-white">Contatti</h4>
+        <ul class="site-footer__contacts m-0 grid list-none gap-[0.45rem] p-0">
+          <li>
+            <a
+              href={mailtoLink(contacts.email)}
+              class="block max-w-full truncate text-[0.95rem] text-text-dark-muted underline decoration-[rgba(196,205,214,0.35)] decoration-1 underline-offset-4 transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white hover:decoration-red"
+            >
+              {contacts.email}
+            </a>
+          </li>
+          {contacts.referents.map((referent) => (
+            <li>
+              <a
+                href={telLink(referent.phone)}
+                aria-label={`${referent.name} — ${referent.role}`}
+                title={`${referent.name} — ${referent.role}`}
+                class="block max-w-full truncate text-[0.95rem] text-text-dark-muted underline decoration-[rgba(196,205,214,0.35)] decoration-1 underline-offset-4 transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white hover:decoration-red"
+              >
+                {referent.name}
+                <span aria-hidden="true"> · </span>
+                {referent.role}
+                <span aria-hidden="true"> · </span>
+                {referent.phoneDisplay}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <WhatsAppButton label="Scrivici su WhatsApp" size="sm" class="mt-4" />
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-line-dark py-[1.4rem] max-[620px]:flex-col max-[620px]:items-start">
+      <p class="m-0 text-[0.85rem]">
+        © {year} {site.name} — {site.legalAddress} · Codice fiscale {site.fiscalCode}
+      </p>
+      <ul class="m-0 flex flex-wrap list-none gap-x-[1.4rem] gap-y-[0.4rem] p-0">
+        <li>
+          <a
+            href="/privacy-policy/"
+            class="bg-none p-0 text-[0.85rem] text-text-dark-muted no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white"
+          >
+            Privacy Policy
+          </a>
+        </li>
+        <li>
+          <a
+            href="/cookie-policy/"
+            class="bg-none p-0 text-[0.85rem] text-text-dark-muted no-underline transition-colors duration-[280ms] ease-[var(--ease)] hover:text-white"
+          >
+            Cookie Policy
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
