@@ -27,7 +27,7 @@ export const instructors: Instructor[] = [
     slug: 'dario-vuerich',
     name: 'Dario Vuerich',
     role: 'Istruttore Judo',
-    grade: ['5° DAN', '1° DAN Ju-Jitsu'],
+    grade: ['5° DAN', '1° DAN JU-JITSU'],
     courses: ['judo', 'difesa-personale'],
     image: 'instructors/dario-vuerich',
     bio: '',
@@ -35,7 +35,7 @@ export const instructors: Instructor[] = [
   {
     slug: 'paolo-menini',
     name: 'Paolo Menini',
-    role: 'Allenatore Judo',
+    role: 'Allenatore Judo e Istruttore Brazilian Jiu Jitsu',
     grade: ['3° DAN'],
     courses: ['judo', 'psicomotricita'],
     image: 'instructors/paolo-menini',
@@ -45,7 +45,7 @@ export const instructors: Instructor[] = [
     slug: 'ales-spazian',
     name: 'Ales Spazian',
     role: 'Allenatore Judo e Istruttore Difesa Personale',
-    grade: ['3° DAN', 'MGA 2° Livello'],
+    grade: ['3° DAN', 'MGA 2° LIVELLO'],
     courses: ['judo', 'difesa-personale'],
     image: 'instructors/ales-spazian',
     bio: '',
@@ -85,6 +85,14 @@ export const instructors: Instructor[] = [
     courses: ['karate'],
     image: 'instructors/giorgio-malesani',
     bio: '',
+  },
+  {
+    slug: 'psicomotricista',
+    name: 'Psicomotricista',
+    role: 'Psicomotricista',
+    courses: ['psicomotricita'],
+    image: 'instructors/placeholder',
+    bio: 'Il percorso è seguito da un/una psicomotricista nominato/a ogni stagione: il nome per questa edizione verrà comunicato a breve.',
   },
 ];
 

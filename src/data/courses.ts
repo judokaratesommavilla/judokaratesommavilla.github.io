@@ -197,14 +197,9 @@ export const courses: Course[] = [
     startDates: [
       {
         location: 'sommacampagna',
-        label: 'Bambini e adolescenti (fino a 13 anni)',
-        date: '2026-09-01',
-      },
-      {
-        location: 'sommacampagna',
-        label: 'Ragazzi e adulti (dai 14 anni)',
-        date: '2026-10-02',
-      },
+        label: 'Bambini, adolescenti, ragazzi e adulti',
+        date: '2026-09-18',
+      }
     ],
     locations: ['sommacampagna'],
     instructorSlugs: ['giorgio-malesani'],
@@ -387,11 +382,10 @@ export const courses: Course[] = [
       },
     ],
     locations: ['sommacampagna'],
-    instructorSlugs: ['doriano-cordioli', 'paolo-menini'],
+    instructorSlugs: ['doriano-cordioli', 'paolo-menini', 'psicomotricista'],
     image: 'courses/psicomotricita-card',
     imageAlt: 'Percorso di psicomotricità per bambini di 4 e 5 anni a Sommacampagna',
     ctaLabel: 'Scopri il percorso per i più piccoli',
-    fee: '80 € · 10 lezioni',
     faqs: [
       {
         question: 'Per quale età è pensato il percorso?',

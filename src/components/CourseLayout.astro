@@ -2,12 +2,12 @@
 import type { Course } from '../data/types';
 import { locationMap } from '../data/locations';
 import { instructorMap } from '../data/instructors';
-import { formatDayMonth } from '../utils/dates';
 
 import PageHero from './PageHero.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import BackgroundOrnaments from './BackgroundOrnaments.astro';
 import SectionHeading from './SectionHeading.astro';
+import StartDates from './StartDates.astro';
 import CourseSchedule from './CourseSchedule.astro';
 import InstructorCard from './InstructorCard.astro';
 import LocationCard from './LocationCard.astro';
@@ -36,9 +36,6 @@ const instructors = course.instructorSlugs
   .map((slug) => instructorMap[slug])
   .filter((instructor) => instructor !== undefined);
 const scheduleDays = [...new Set(course.schedule.map((entry) => entry.days))];
-const nextStart = course.startDates.length
-  ? [...course.startDates].sort((a, b) => a.date.localeCompare(b.date))[0]
-  : undefined;
 ---
 
 <PageHero
@@ -144,16 +141,18 @@ const nextStart = course.startDates.length
       text="Allenamenti settimanali organizzati per fascia d'età. Gli orari possono subire variazioni: contattaci per conferma."
     />
     <CourseSchedule course={course} />
-    {nextStart && (
-      <p class="start-note mt-6 rounded-sm border border-dashed border-line px-[1.3rem] py-4 text-base text-text-muted">
-        Prossimo inizio: <strong class="text-text">{nextStart.label}</strong> — {formatDayMonth(nextStart.date)} · {locationMap[nextStart.location].name}
-      </p>
-    )}
     {course.fee && (
       <p class="start-note mt-6 rounded-sm border border-dashed border-line px-[1.3rem] py-4 text-base text-text-muted">
         Quota indicativa: <strong class="text-text">{course.fee}</strong> · dato configurabile, contattaci per il dettaglio aggiornato.
       </p>
     )}
+  </div>
+</section>
+
+<!-- Date di inizio -->
+<section class="section">
+  <div class="container">
+    <StartDates courseSlugs={[course.slug]} title="Quando inizia il corso" />
   </div>
 </section>
 
