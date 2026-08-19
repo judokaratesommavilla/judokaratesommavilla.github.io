@@ -22,7 +22,7 @@ Nel 2012 ha conseguito la qualifica di **Hanshi** presso il prestigioso Dai Nipp
 
 ### Gli esami di cintura
 
-Domenica scorsa una settantina di **bambini e ragazzi dai 5 ai 16 anni** ha sostenuto gli esami per il passaggio di cintura, sotto la stretta osservazione dei loro insegnanti tecnici Doriano Cordioli, Giancarlo Zocca, Dario Vuerich e Filippo Turrini, con la partecipazione del delegato provinciale della Federazione FIJLKAM, il maestro Maurizio Piccoli.
+Domenica scorsa una settantina di **bambini e ragazzi dai 5 ai 16 anni** ha sostenuto gli esami per il passaggio di cintura, sotto la stretta osservazione dei loro insegnanti tecnici Doriano Cordioli, Giancarlo Zocca e Dario Vuerich, con la partecipazione del delegato provinciale della Federazione FIJLKAM, il maestro Maurizio Piccoli.
 
 > "La gioia di poter indossare la nuova cintura", commenta il maestro Doriano Cordioli, "è stata per tutti grande, compresi i genitori che hanno assistito alle prove".
 

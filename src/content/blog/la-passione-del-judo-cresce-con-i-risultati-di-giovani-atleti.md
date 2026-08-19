@@ -24,8 +24,7 @@ Dopo le brillanti affermazioni degli allievi di Villafranca cresciuti nel vivaio
 
 ## Le nuove cinture nere
 
-- **Filippo Turrini** — aspirante allenatore, ha raggiunto il prestigioso grado di cintura nera 3° DAN, dopo aver pubblicato un libro sulla vita del fondatore del Judo, Jigoro Kano.
-- **Damiano Rigo, Mirco De Marchi, Lorenzo Fedrigo e Carlo Levi** — hanno mosso i primi passi in un mondo vasto e variegato: il 1° DAN non è un punto di arrivo, ma l'inizio di un lungo cammino.
+**Damiano Rigo, Mirco De Marchi, Lorenzo Fedrigo e Carlo Levi** — hanno mosso i primi passi in un mondo vasto e variegato: il 1° DAN non è un punto di arrivo, ma l'inizio di un lungo cammino.
 
 Alla fine della prova d'esame, la coppia Rigo e De Marchi è stata convocata nella **squadra regionale di Kata** in vista dei prossimi campionati italiani.
 
