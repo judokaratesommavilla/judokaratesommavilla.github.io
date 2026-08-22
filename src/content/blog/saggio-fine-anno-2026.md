@@ -4,7 +4,7 @@ description: "Martedì 24 maggio 2026 il saggio di fine anno con il passaggio di
 publishDate: 2026-05-24
 author: "Redazione"
 category: "Eventi"
-tags: ["judo", "karate", "eventi", "saggio", "cinture", "esami"]
+tags: ["judo", "eventi", "saggio", "cinture", "esami"]
 image: ./images/foto-saggio-fine-anno-2026.webp
 imageAlt: "Atleti di judo della ASD Judo Karate Sommavilla sul tatami durante il saggio di fine anno"
 draft: false

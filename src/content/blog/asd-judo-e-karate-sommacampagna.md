@@ -18,12 +18,7 @@ L'associazione è stata costituita e ha iniziato la propria attività nel 1989, 
 
 Nel 1996 è stata inserita la sezione karate. Da allora i due percorsi sono cresciuti insieme, e numerosi sono oggi i praticanti: si va dall'età di 4-5 anni fino agli oltre sessanta.
 
-## I corsi
-
-I corsi sono così organizzati:
-
-- **Judo** — lunedì e giovedì
-- **Karate** — martedì e venerdì
+## Gli allenamenti
 
 La giornata di allenamento alterna sudore, gioco e tecnica: il contatto corpo a corpo, la possibilità di rotolarsi sulla materassina, muoversi a piedi nudi, correre, saltare e cadere, e innumerevoli situazioni motorie.
 
@@ -37,7 +32,7 @@ Gli insegnanti tecnici della A.S.D. Judo Sommacampagna sono figure con una lunga
 
 - **Doriano Cordioli** — maestro di judo dal 2003, praticante dal 1972, con un passato agonistico di livello nazionale e universitario e il 6° DAN.
 - **Dario Vuerich** — istruttore di judo da oltre trent'anni, 4° DAN, praticante dal 1971, primo dan di ju jitsu.
-- **Giorgio Malesani** — responsabile del settore karate, maestro federale dal 1996, 6° DAN di stile Okinawa Go-Ju-Ryu, affiancato da **Manuela Vinco** 2° DAN.
+- **Giorgio Malesani** — responsabile del settore karate, maestro federale dal 1996, 6° DAN di stile Okinawa Go-Ju-Ryu.
 
 > "Non si impara solo a cadere e a rialzarsi: si impara a rispettare gli altri e a dare il meglio di sé."
 
