@@ -1,0 +1,13 @@
+# ────────────────────────────────────────────────────────────────
+# ASD Judo Karate Sommavilla — redirect canonici (Apache / Aruba)
+# ────────────────────────────────────────────────────────────────
+# Elimina i contenuti duplicati segnalati da Google Search Console:
+# /index.html e /sport/judo/index.html ecc. vengono reindirizzati
+# 301 alla versione "pulita" (/ e /sport/judo/).
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # /index.html -> /   e   /percorso/index.html -> /percorso/
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+</IfModule>

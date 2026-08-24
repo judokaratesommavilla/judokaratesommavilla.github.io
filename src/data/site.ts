@@ -6,7 +6,7 @@ export const site = {
   name: 'ASD Judo Karate Sommavilla',
   shortName: 'Judo Karate Sommavilla',
   legalName: 'ASD Judo Karate Sommavilla',
-  url: 'https://asdsommavilla.it',
+  url: 'https://www.asdsommavilla.it',
   email: 'info@asdsommavilla.it',
   lang: 'it',
   locale: 'it-IT',

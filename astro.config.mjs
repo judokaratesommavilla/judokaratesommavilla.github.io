@@ -7,7 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   // Sito ospitato su Aruba Hosting alla radice del dominio.
-  site: 'https://asdsommavilla.it',
+  // Il dominio canonico è www.asdsommavilla.it: l'apex (asdsommavilla.it)
+  // reindirizza 301 verso www, quindi tutti gli URL assoluti (canonical,
+  // sitemap, og:url) devono usare la variante con www.
+  site: 'https://www.asdsommavilla.it',
   output: 'static',
   compressHTML: true,
   build: {
