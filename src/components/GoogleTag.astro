@@ -1,0 +1,30 @@
+---
+// Google Tag (gtag.js) — Google Ads Conversion Tracking.
+// Snippet ufficiale fornito da Google Ads: da inserire il prima possibile
+// nell'<head>. `is:inline` è obbligatorio in Astro perché questo script di
+// terze parti (dataLayer/gtag) non deve essere processato dal bundler.
+// ID di conversione: AW-18408699691
+//
+// Google Consent Mode v2: tutti i dati partono NEGATI di default
+// (ad_storage / ad_user_data / ad_personalization / analytics_storage =
+// denied), quindi i tag non impostano cookie né per marketing né per
+// analytics finché l'utente non esprime il consenso dal banner
+// (CookieConsent.vue o la CMP), che aggiorna lo stato con gtag('consent',
+// 'update', ...).
+---
+
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18408699691"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+  });
+
+  gtag('config', 'AW-18408699691');
+</script>

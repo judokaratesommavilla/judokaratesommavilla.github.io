@@ -9,6 +9,7 @@ import '@fontsource-variable/source-sans-3/wght.css';
 import '../styles/global.css';
 
 import SEO from '../components/SEO.astro';
+import GoogleTag from '../components/GoogleTag.astro';
 import CloudflareAnalytics from '../components/CloudflareAnalytics.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
@@ -16,6 +17,7 @@ import BackgroundOrnaments from '../components/BackgroundOrnaments.astro';
 import { ClientRouter } from 'astro:transitions';
 import ContactModal from '../components/vue/ContactModal.vue';
 import PhotoModal from '../components/vue/PhotoModal.vue';
+import CookieConsent from '../components/vue/CookieConsent.vue';
 import { site } from '../data/site';
 import { buildOrganization, buildWebsite } from '../utils/seo';
 
@@ -48,6 +50,7 @@ const pathname = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <GoogleTag />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/logo.svg" />
     <SEO
@@ -78,6 +81,7 @@ const pathname = Astro.url.pathname;
     <Footer />
     <ContactModal client:load />
     <PhotoModal client:load />
+    <CookieConsent client:load />
     <script>
       let header: HTMLElement | null = null;
       const updateNav = () => {

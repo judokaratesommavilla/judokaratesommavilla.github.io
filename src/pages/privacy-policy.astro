@@ -31,7 +31,7 @@ const legal =
       <span class="eyebrow">Privacy</span>
       <h1 class="legal-title mt-[0.8rem] text-[clamp(2.4rem,5vw,3.8rem)]">Privacy Policy</h1>
       <p class="legal-updated m-[0.5rem_0_1.5rem] text-[0.95rem] text-text-muted">
-        Ultimo aggiornamento: 18/08/2026 · Documento da verificare e adattare da un professionista.
+        Ultimo aggiornamento: 24/08/2026 · Documento da verificare e adattare da un professionista.
       </p>
 
       <!-- <div class="legal-alert mb-8 rounded-sm border border-red-line bg-red-soft px-[1.3rem] py-4 text-[0.98rem] text-red-dark">
@@ -68,9 +68,11 @@ const legal =
           trattati dal titolare e dal fornitore del servizio esclusivamente per gestire la richiesta.
         </p>
         <p>
-          Il sito non raccoglie dati personali tramite cookie di profilazione o strumenti pubblicitari.
+          Il sito non raccoglie dati personali tramite il modulo di contatto per finalità di profilazione.
           Le statistiche di navigazione usano <strong>Cloudflare Web Analytics</strong>, uno strumento
-          cookieless che non registra dati personali (vedi la Cookie Policy).
+          cookieless che non registra dati personali. Il sito utilizza inoltre il tag
+          <strong>Google Ads</strong> (gtag.js) per la misurazione delle conversioni e, previo consenso,
+          per finalità di remarketing: tale tag può installare cookie di terze parti (vedi la Cookie Policy).
         </p>
       </article>
       <article class={legal}>
@@ -83,7 +85,12 @@ const legal =
             dell'interessato, art. 6, par. 1, lett. b), GDPR);
           </li>
           <li>adempiere a obblighi previsti dalla legge (art. 6, par. 1, lett. c), GDPR);</li>
-          <li>tutelare i legittimi interessi del titolare (art. 6, par. 1, lett. f), GDPR).</li>
+          <li>tutelare i legittimi interessi del titolare (art. 6, par. 1, lett. f), GDPR);</li>
+          <li>
+            misurare l'efficacia delle campagne pubblicitarie e, previo consenso, effettuare attività di
+            remarketing tramite <strong>Google Ads</strong> (base giuridica: consenso, art. 6, par. 1,
+            lett. a), GDPR).
+          </li>
         </ul>
         <p>
           L'eventuale consenso espresso selezionando la casella presente nel modulo costituisce un'ulteriore
@@ -96,7 +103,8 @@ const legal =
         <p>
           I dati sono trattati con strumenti informatici e telematici, con misure di sicurezza adeguate a
           garantirne la riservatezza, l'integrità e la disponibilità. Non vengono effettuati processi
-          decisionali automatizzati né profilazione.
+          decisionali automatizzati. La profilazione a fini pubblicitari può essere effettuata
+          esclusivamente tramite il tag Google Ads e solo previo consenso dell'utente.
         </p>
       </article>
 
@@ -130,6 +138,12 @@ const legal =
             Fornitura di Cloudflare Web Analytics
             (statistiche di navigazione, nessun dato personale trattato).
           </li>
+          <li>
+            <strong>Google Ireland Limited</strong> (Gordon House, Barrow Street, Dublino, Irlanda) e,
+            per i trasferimenti verso gli Stati Uniti, <strong>Google LLC</strong> (1600 Amphitheatre
+            Parkway, Mountain View, CA 94043, Stati Uniti) - Fornitura del tag di conversione Google Ads
+            (gtag.js) per la misurazione delle conversioni e, previo consenso, il remarketing.
+          </li>
           <li>autorità competenti, ove previsto dalla legge.</li>
         </ul>
         <p>I dati non sono diffusi né venduti.</p>
@@ -138,7 +152,7 @@ const legal =
       <article class={legal}>
         <h2>7. Trasferimento dei dati fuori dallo SEE</h2>
         <p>
-          Alcuni fornitori (Cloudflare e Forminit) operano anche al di fuori
+          Alcuni fornitori (Google, Cloudflare e Forminit) operano anche al di fuori
           dello Spazio Economico Europeo. Ove ciò riguardi i dati, il trasferimento avviene sulla base di
           garanzie adeguate ai sensi degli art. 44-49 GDPR (es. Standard Contractual Clauses)
         </p>
@@ -154,7 +168,20 @@ const legal =
       </article>
 
       <article class={legal}>
-        <h2>9. Link a piattaforme esterne</h2>
+        <h2>9. Google Ads (tag di conversione)</h2>
+        <p>
+          Il sito utilizza il tag di conversione <strong>Google Ads</strong> (gtag.js, ID di conversione{' '}
+          <code>AW-18408699691</code>) per misurare l'efficacia delle campagne pubblicitarie di Google e,
+          previo consenso, mostrare annunci mirati (remarketing). Il tag è fornito da{' '}
+          <strong>Google Ireland Limited</strong> e può installare cookie di terze parti sul dispositivo
+          dell'utente (dominio google.com). L'installazione di tali cookie è subordinata al consenso
+          dell'utente, come descritto nella{' '}
+          <a href="/cookie-policy/" class="legal-link font-bold text-red no-underline hover:underline">Cookie Policy</a>.
+        </p>
+      </article>
+
+      <article class={legal}>
+        <h2>10. Link a piattaforme esterne</h2>
         <p>
           Il sito contiene semplici link verso Facebook, Instagram, WhatsApp e Google Maps. Selezionandoli si
           abbandona il sito e si applicano le privacy e cookie policy dei soggetti terzi. Il sito non carica
@@ -163,7 +190,7 @@ const legal =
       </article>
 
       <article class={legal}>
-        <h2>10. Diritti dell'interessato</h2>
+        <h2>11. Diritti dell'interessato</h2>
         <p>Ai sensi della normativa applicabile, hai diritto di:</p>
         <ul>
           <li>accedere ai tuoi dati personali;</li>
@@ -181,7 +208,7 @@ const legal =
       </article>
 
       <article class={legal}>
-        <h2>11. Reclamo al Garante</h2>
+        <h2>12. Reclamo al Garante</h2>
         <p>
           In caso di violazione hai diritto di proporre reclamo al Garante per la Protezione dei Dati
           Personali (www.garanteprivacy.it), autorità di controllo italiana.
